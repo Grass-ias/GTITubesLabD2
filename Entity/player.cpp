@@ -1,6 +1,6 @@
 #include "player.h"
-#include "../globals.h"
-#include "../World/level.h" 
+#include "../Core/globals.h"
+#include "../Map/map.h" 
 #include <math.h>
 
 void updatePlayer() {
@@ -194,8 +194,8 @@ void updatePlayer() {
     float targetRadX = 0.3f;
     float targetRadZ = 0.3f;
     if (isSliding && currentSpeed > 0.05f) {
-        targetRadX = 0.3f + abs(velX/currentSpeed) * 0.6f;
-        targetRadZ = 0.3f + abs(velZ/currentSpeed) * 0.6f;
+        targetRadX = 0.3f + fabs(velX/currentSpeed) * 0.6f;
+        targetRadZ = 0.3f + fabs(velZ/currentSpeed) * 0.6f;
     }
 
     if (!checkWallCollision(ballX, ballY, ballZ, targetRadX, targetRadZ, currentHeight)) {

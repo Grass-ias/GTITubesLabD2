@@ -10,10 +10,10 @@ struct LevelChunk {
     float x[JUMLAH_PLATFORM], y[JUMLAH_PLATFORM], z[JUMLAH_PLATFORM];
     float sx[JUMLAH_PLATFORM], sz[JUMLAH_PLATFORM];
     int type[JUMLAH_PLATFORM];
+    bool visited[JUMLAH_PLATFORM];
     bool active; 
 };
 
-// EXTERN VARIABLES (Nilai aslinya didefinisikan di globals.cpp)
 extern GLuint titleTexture;
 extern int gameState; 
 extern int windowWidth;
@@ -35,6 +35,9 @@ extern bool isSprinting;
 extern bool isCrouching;
 extern bool isSliding;
 extern bool isTestMap; 
+
+extern float entityZ;
+extern float entitySpeed;
 
 extern bool isHanging;
 extern bool isClimbing;

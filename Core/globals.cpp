@@ -22,6 +22,9 @@ bool isCrouching = false;
 bool isSliding = false;
 bool isTestMap = false; 
 
+float entityZ = 15.0f;
+float entitySpeed = 0.11f;
+
 bool isHanging = false;
 bool isClimbing = false;
 int climbTimer = 0;
