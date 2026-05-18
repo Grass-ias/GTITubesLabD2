@@ -6,11 +6,6 @@
 #define PI 3.14159265359
 #define JUMLAH_PLATFORM 19 
 
-GLuint titleTexture;
-int gameState = 0; 
-int windowWidth = 900;
-int windowHeight = 600;
-
 struct LevelChunk {
     float x[JUMLAH_PLATFORM], y[JUMLAH_PLATFORM], z[JUMLAH_PLATFORM];
     float sx[JUMLAH_PLATFORM], sz[JUMLAH_PLATFORM];
@@ -18,38 +13,44 @@ struct LevelChunk {
     bool active; 
 };
 
-LevelChunk prevChunk, currChunk, nextChunk;
+// EXTERN VARIABLES (Nilai aslinya didefinisikan di globals.cpp)
+extern GLuint titleTexture;
+extern int gameState; 
+extern int windowWidth;
+extern int windowHeight;
 
-float ballX = 0.0f;
-float ballY = 0.0f; 
-float ballZ = -5.0f;
+extern LevelChunk prevChunk, currChunk, nextChunk;
 
-float velX = 0.0f; 
-float velZ = 0.0f;
-float speedY = 0.0f;
-const float gravity = -0.015f; 
-bool isGrounded = false; 
+extern float ballX;
+extern float ballY; 
+extern float ballZ;
 
-bool isSprinting = false;
-bool isCrouching = false;
-bool isSliding = false;
-bool isTestMap = false; 
+extern float velX; 
+extern float velZ;
+extern float speedY;
+extern const float gravity; 
+extern bool isGrounded; 
 
-bool isHanging = false;
-bool isClimbing = false;
-int climbTimer = 0;
-const int MAX_CLIMB = 30; 
+extern bool isSprinting;
+extern bool isCrouching;
+extern bool isSliding;
+extern bool isTestMap; 
 
-float respawnX = 0.0f;
-float respawnY = 0.0f;
-float respawnZ = -5.0f;
+extern bool isHanging;
+extern bool isClimbing;
+extern int climbTimer;
+extern const int MAX_CLIMB; 
 
-float currentRadiusX = 0.3f; 
-float currentRadiusZ = 0.3f; 
-float currentHeight = 1.2f; 
+extern float respawnX;
+extern float respawnY;
+extern float respawnZ;
 
-float yaw = 0.0f;   
-float pitch = 0.0f; 
-bool keys[256];
+extern float currentRadiusX; 
+extern float currentRadiusZ; 
+extern float currentHeight; 
+
+extern float yaw;   
+extern float pitch; 
+extern bool keys[256];
 
 #endif
