@@ -1,7 +1,7 @@
 #ifndef UI_H
 #define UI_H
 
-#include "globals.h"
+#include "../Core/globals.h"
 
 GLuint loadTexture(const char* filename);
 void drawImage(GLuint tex, float x, float y, float w, float h);

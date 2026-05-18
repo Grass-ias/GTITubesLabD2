@@ -1,15 +1,15 @@
-# Project: RandomAhhParkourGame
+# Project: RandomAhhGame
 # Makefile created by Dev-C++ 5.7.1
 
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o globals.o physics.o ui.o
-LINKOBJ  = main.o globals.o physics.o ui.o
+OBJ      = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/render.o Graphics/ui.o Map/map.o
+LINKOBJ  = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/render.o Graphics/ui.o Map/map.o
 LIBS     = -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib" -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/lib" -static-libstdc++ -static-libgcc -mwindows -lglut32 -lglu32 -lopengl32 -lwinmm -lgdi32 -g3
 INCS     = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include"
 CXXINCS  = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include/c++"
-BIN      = RandomAhhParkourGame.exe
+BIN      = RandomAhhGame.exe
 CXXFLAGS = $(CXXINCS) -g3
 CFLAGS   = $(INCS) -g3 -DGLUT_STATIC
 RM       = rm.exe -f
@@ -24,14 +24,26 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-main.o: main.cpp
-	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+Core/globals.o: Core/globals.cpp
+	$(CPP) -c Core/globals.cpp -o Core/globals.o $(CXXFLAGS)
 
-globals.o: globals.cpp
-	$(CPP) -c globals.cpp -o globals.o $(CXXFLAGS)
+Core/input.o: Core/input.cpp
+	$(CPP) -c Core/input.cpp -o Core/input.o $(CXXFLAGS)
 
-physics.o: physics.cpp
-	$(CPP) -c physics.cpp -o physics.o $(CXXFLAGS)
+Core/main.o: Core/main.cpp
+	$(CPP) -c Core/main.cpp -o Core/main.o $(CXXFLAGS)
 
-ui.o: ui.cpp
-	$(CPP) -c ui.cpp -o ui.o $(CXXFLAGS)
+Entity/enemy.o: Entity/enemy.cpp
+	$(CPP) -c Entity/enemy.cpp -o Entity/enemy.o $(CXXFLAGS)
+
+Entity/player.o: Entity/player.cpp
+	$(CPP) -c Entity/player.cpp -o Entity/player.o $(CXXFLAGS)
+
+Graphics/render.o: Graphics/render.cpp
+	$(CPP) -c Graphics/render.cpp -o Graphics/render.o $(CXXFLAGS)
+
+Graphics/ui.o: Graphics/ui.cpp
+	$(CPP) -c Graphics/ui.cpp -o Graphics/ui.o $(CXXFLAGS)
+
+Map/map.o: Map/map.cpp
+	$(CPP) -c Map/map.cpp -o Map/map.o $(CXXFLAGS)

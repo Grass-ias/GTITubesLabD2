@@ -125,13 +125,21 @@ void drawHUD() {
 }
 
 void setupLighting() {
-    glEnable(GL_LIGHTING); glEnable(GL_LIGHT0); glEnable(GL_COLOR_MATERIAL); glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-    GLfloat lightPos[] = {5.0f, 15.0f, 5.0f, 1.0f}; GLfloat lightAmbient[] = {0.6f, 0.6f, 0.6f, 1.0f}; GLfloat lightDiffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPos); glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient); glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+    glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_COLOR_MATERIAL);
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    GLfloat lightPos[] = {5.0f, 15.0f, 5.0f, 1.0f};
+	GLfloat lightAmbient[] = {0.6f, 0.6f, 0.6f, 1.0f};
+	GLfloat lightDiffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
 }
 
 void drawGame3D() {
-    float eyeX = ballX; float eyeY = ballY + currentHeight; float eyeZ = ballZ;
+    float eyeX = ballX;
+	float eyeY = ballY + currentHeight; float eyeZ = ballZ;
     float targetX = eyeX + (cos(pitch) * sin(yaw)); float targetY = eyeY + sin(pitch); float targetZ = eyeZ - (cos(pitch) * cos(yaw));
     gluLookAt(eyeX, eyeY, eyeZ, targetX, targetY, targetZ, 0.0f, 1.0f, 0.0f);
 

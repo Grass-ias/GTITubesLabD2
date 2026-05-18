@@ -6,8 +6,8 @@
 
 #include "input.h"
 #include "globals.h"
-#include "physics.h"
-#include "ui.h"
+#include "../Map/map.h"
+#include "../Graphics/ui.h"
 
 void timer(int value) {
     if (gameState == 1) {
@@ -309,7 +309,7 @@ void init() {
     glClearColor(0.2, 0.6, 0.8, 1.0); 
     glEnable(GL_DEPTH_TEST); 
     setupLighting(); 
-    titleTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\sementara.png");
+    titleTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\sementara.png");
 }
 
 int main(int argc, char **argv) {

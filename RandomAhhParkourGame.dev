@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=1
 CompilerSettings=0000000000000000001000000
-UnitCount=8
+UnitCount=2
 
 [VersionInfo]
 Major=1
@@ -51,7 +51,7 @@ AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit1]
-FileName=main.cpp
+FileName=Map\map.cpp
 CompileCpp=1
 Folder=RandomAhhParkourGame
 Compile=1
@@ -61,7 +61,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=globals.cpp
+FileName=Map\map.h
 CompileCpp=1
 Folder=RandomAhhParkourGame
 Compile=1
