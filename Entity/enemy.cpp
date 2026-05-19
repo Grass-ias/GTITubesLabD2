@@ -3,9 +3,9 @@
 
 void updateEnemy() {
     if (!isTestMap) {
-        entityZ -= entitySpeed; 
+        enemyZ -= enemySpeed; 
 
-        if (ballY < -30.0f || ballZ > entityZ) { 
+        if (ballY < -30.0f || ballZ > enemyZ) { 
             ballX = respawnX;
             ballY = respawnY + 2.0f;
             ballZ = respawnZ; 
@@ -13,7 +13,7 @@ void updateEnemy() {
             velX = 0;
             velZ = 0;
             speedY = 0.0f; 
-            entityZ = respawnZ + 15.0f; 
+            enemyZ = respawnZ + 15.0f; 
         }
     }
     else {
