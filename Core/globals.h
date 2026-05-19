@@ -36,8 +36,13 @@ extern bool isCrouching;
 extern bool isSliding;
 extern bool isTestMap; 
 
-extern float entityZ;
-extern float entitySpeed;
+extern float enemyZ;
+extern float enemySpeed;
+
+extern GLUquadricObj* quadricEnemy;
+
+extern bool chaseStarted;
+extern int introTimer;
 
 extern bool isHanging;
 extern bool isClimbing;

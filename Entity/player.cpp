@@ -246,8 +246,9 @@ void updatePlayer() {
     float groundY = getGroundY(ballX, ballZ, oldY, currentRadiusX, currentRadiusZ);
     
     if (nextY <= groundY) {
-        ballY = groundY; speedY = 0; isGrounded = true; 
-        
+        ballY = groundY;
+        speedY = 0;
+        isGrounded = true; 
         if (!isTestMap) {
             LevelChunk* chunksToCheck[2] = {&currChunk, &nextChunk};
             for (int c = 0; c < 2; c++) {
@@ -260,10 +261,21 @@ void updatePlayer() {
                         float maxX = chunksToCheck[c]->x[i] + (chunksToCheck[c]->sx[i] / 2.0f);
                         float minZ = chunksToCheck[c]->z[i] - (chunksToCheck[c]->sz[i] / 2.0f);
                         float maxZ = chunksToCheck[c]->z[i] + (chunksToCheck[c]->sz[i] / 2.0f);
+
                         if (ballX >= minX && ballX <= maxX && ballZ >= minZ && ballZ <= maxZ) {
                             respawnX = chunksToCheck[c]->x[i];
                             respawnY = chunksToCheck[c]->y[i] + 0.25f;
                             respawnZ = chunksToCheck[c]->z[i];
+
+                            if (!chunksToCheck[c]->visited[i]) {
+                                chunksToCheck[c]->visited[i] = true;
+                                if (!chaseStarted && introTimer == 0) {
+                                    introTimer = 150;
+                                } 
+                                else if (chaseStarted) {
+                                    enemySpeed += 0.004f; 
+                                }
+                            }                            
                         }
                     }
                 }
@@ -271,6 +283,7 @@ void updatePlayer() {
         }
     } 
     else {
-        ballY = nextY; isGrounded = false; 
+        ballY = nextY; 
+        isGrounded = false; 
     }
 }

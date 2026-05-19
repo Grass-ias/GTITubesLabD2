@@ -1,16 +1,22 @@
 #include "ui.h"
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+
+extern bool chaseStarted;
+extern int introTimer;
+extern GLUquadricObj* quadricEnemy;
 
 GLuint loadTexture(const char* filename) {
     int width, height, channels;
     unsigned char* data = stbi_load(filename, &width, &height, &channels, 0);
     if (!data) { 
         printf("Gagal load image: %s\n", filename); 
-        return 0; }
+        return 0; 
+    }
     GLuint texture; 
     glGenTextures(1, &texture); 
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -25,20 +31,23 @@ GLuint loadTexture(const char* filename) {
 void drawImage(GLuint tex, float x, float y, float w, float h) {
     glEnable(GL_TEXTURE_2D); 
     glBindTexture(GL_TEXTURE_2D, tex); 
-    glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor3f(1, 1, 1);
 
     glBegin(GL_QUADS); 
-    glTexCoord2f(0, 1); 
+    glTexCoord2f(0, 1);
     glVertex2f(x, y); 
     glTexCoord2f(1, 1);
     glVertex2f(x + w, y); 
-    glTexCoord2f(1, 0); 
+    glTexCoord2f(1, 0);
     glVertex2f(x + w, y + h); 
-    glTexCoord2f(0, 0); 
+    glTexCoord2f(0, 0);
     glVertex2f(x, y + h); 
     glEnd();
-    glDisable(GL_TEXTURE_2D); glDisable(GL_BLEND);
+    
+    glDisable(GL_TEXTURE_2D); 
+    glDisable(GL_BLEND);
 }
 
 void drawText(float x, float y, const char* text) {
@@ -50,6 +59,7 @@ void drawText(float x, float y, const char* text) {
 
 void begin2D() {
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_FOG);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -60,12 +70,13 @@ void begin2D() {
 }
 
 void end2D() {
-    glMatrixMode(GL_MODELVIEW); 
+    glMatrixMode(GL_MODELVIEW);
     glPopMatrix(); 
     glMatrixMode(GL_PROJECTION); 
     glPopMatrix(); 
     glMatrixMode(GL_MODELVIEW); 
     glEnable(GL_DEPTH_TEST); 
+    if (chaseStarted) glEnable(GL_FOG);
 }
 
 void drawMenu() {
@@ -95,28 +106,39 @@ void drawHelp() {
 void drawHUD() {
     begin2D(); 
     glColor3f(1, 1, 1);
-    char debugText[100]; 
+    
+    if (introTimer > 0) {
+        if ((introTimer / 10) % 2 == 0) {
+            glColor3f(1.0f, 0.0f, 0.0f);
+            drawText(windowWidth / 2 - 140, windowHeight / 2 + 50, "YOU CAN'T RUN FROM 'IT'");
+        }
+    }
+
     float currentSpeed = sqrt(velX*velX + velZ*velZ) * 100.0f; 
-    sprintf(debugText, "Speed: %.0f | Map: %s", currentSpeed, isTestMap ? "TEST ROOM" : "INFINITE MAP");
+    char debugText[100]; 
+    
+    if (chaseStarted) {
+        float distanceToIT = abs(ballZ - enemyZ); 
+        sprintf(debugText, "Speed: %.0f | Distance to IT: %.1f m", currentSpeed, distanceToIT);
+        if (distanceToIT < 15.0f && !isTestMap) {
+            glColor3f(1.0f, 0.2f, 0.2f);
+        }
+    } 
+    else {
+        sprintf(debugText, "Speed: %.0f | Map: %s", currentSpeed, isTestMap ? "TEST ROOM" : "INFINITE MAP");
+    }
+    
     drawText(20, windowHeight - 30, debugText);
+    glColor3f(1, 1, 1);
     
     char stateText[50];
     if (isHanging) sprintf(stateText, "STATE: Peeking (W = Vault, S/C = Drop)");
-    else if (isClimbing) {
-        sprintf(stateText, "STATE: Wall Climbing!");
-    }
-    else if (isSliding) {
-        sprintf(stateText, "STATE: SLIDING");
-    }
-    else if (isCrouching) {
-        sprintf(stateText, "STATE: Crouching");
-    }
-    else if (isSprinting) {
-        sprintf(stateText, "STATE: Sprinting");
-    }
-    else {
-        sprintf(stateText, "STATE: Walking");
-    }
+    else if (isClimbing) sprintf(stateText, "STATE: Wall Climbing!");
+    else if (isSliding) sprintf(stateText, "STATE: SLIDING!!!");
+    else if (isCrouching) sprintf(stateText, "STATE: Crouching");
+    else if (isSprinting) sprintf(stateText, "STATE: Sprinting");
+    else sprintf(stateText, "STATE: Walking");
+    
     drawText(20, windowHeight - 60, stateText);
 
     drawText(20, 20, "Q=Sprint | C=Slide | '='=Map");
@@ -126,41 +148,115 @@ void drawHUD() {
 
 void setupLighting() {
     glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_COLOR_MATERIAL);
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-    GLfloat lightPos[] = {5.0f, 15.0f, 5.0f, 1.0f};
-	GLfloat lightAmbient[] = {0.6f, 0.6f, 0.6f, 1.0f};
-	GLfloat lightDiffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    
+    GLfloat lightPos[] = {0.0f, 20.0f, 0.0f, 1.0f}; 
+    GLfloat lightAmbient[] = {0.1f, 0.1f, 0.2f, 1.0f};
+    GLfloat lightDiffuse[] = {0.5f, 0.5f, 0.6f, 1.0f};
+    GLfloat lightSpecular[] = {1.0f, 1.0f, 1.0f, 1.0f}; 
+    
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular);
 }
 
 void drawGame3D() {
     float eyeX = ballX;
-	float eyeY = ballY + currentHeight; float eyeZ = ballZ;
-    float targetX = eyeX + (cos(pitch) * sin(yaw)); float targetY = eyeY + sin(pitch); float targetZ = eyeZ - (cos(pitch) * cos(yaw));
+    float eyeY = ballY + currentHeight;
+    float eyeZ = ballZ;
+    float targetX = eyeX + (cos(pitch) * sin(yaw)); 
+    float targetY = eyeY + sin(pitch); 
+    float targetZ = eyeZ - (cos(pitch) * cos(yaw));
+
+    float distanceToIT = abs(ballZ - enemyZ);
+    if ((introTimer > 0) || (chaseStarted && distanceToIT < 25.0f && !isTestMap)) {
+        
+        float shakeIntensity = (introTimer > 0) ? 0.15f : (25.0f - distanceToIT) * 0.006f; 
+        
+        float randomOffsetX = ((rand() % 100) / 100.0f - 0.5f) * shakeIntensity;
+        float randomOffsetY = ((rand() % 100) / 100.0f - 0.5f) * shakeIntensity;
+        targetX += randomOffsetX;
+        targetY += randomOffsetY;
+    }
+
     gluLookAt(eyeX, eyeY, eyeZ, targetX, targetY, targetZ, 0.0f, 1.0f, 0.0f);
 
     if (isTestMap) {
-        glPushMatrix(); glTranslatef(0, -0.5f, 0); glScalef(100.0, 1.0, 100.0);
-        glColor3f(0.8f, 0.8f, 0.8f); glutSolidCube(1.0); glColor3f(0,0,0); glutWireCube(1.0); glPopMatrix();
+        glPushMatrix();
+        glTranslatef(0, -0.5f, 0);
+        glScalef(100.0, 1.0, 100.0);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glutSolidCube(1.0);
+        glColor3f(0,0,0);
+        glutWireCube(1.0);
+        glPopMatrix();
         
-        glPushMatrix(); glTranslatef(0, 1.9f, -12.5f); glScalef(4.0, 2.2, 5.0);
-        glColor3f(1.0f, 0.2f, 0.2f); glutSolidCube(1.0); glColor3f(0,0,0); glutWireCube(1.0); glPopMatrix();
+        glPushMatrix();
+        glTranslatef(0, 1.9f, -12.5f);
+        glScalef(4.0, 2.2, 5.0);
+        glColor3f(1.0f, 0.2f, 0.2f);
+        glutSolidCube(1.0);
+        glColor3f(0,0,0);
+        glutWireCube(1.0);
+        glPopMatrix();
         
-        glPushMatrix(); glTranslatef(-4.0f, 0.0f, -9.0f); glScalef(2.0, 2.0, 2.0);
-        glColor3f(0.2f, 0.2f, 1.0f); glutSolidCube(1.0); glColor3f(0,0,0); glutWireCube(1.0); glPopMatrix();
+        glPushMatrix();
+        glTranslatef(-4.0f, 0.0f, -9.0f);
+        glScalef(2.0, 2.0, 2.0);
+        glColor3f(0.2f, 0.2f, 1.0f);
+        glutSolidCube(1.0);
+        glColor3f(0,0,0);
+        glutWireCube(1.0); glPopMatrix();
 
-        glPushMatrix(); glTranslatef(4.5f, 3.0f, -10.5f); glScalef(3.0, 6.0, 3.0);
-        glColor3f(0.8f, 0.8f, 0.2f); glutSolidCube(1.0); glColor3f(0,0,0); glutWireCube(1.0); glPopMatrix();
+        glPushMatrix();
+        glTranslatef(4.5f, 3.0f, -10.5f);
+        glScalef(3.0, 6.0, 3.0);
+        glColor3f(0.8f, 0.8f, 0.2f); 
+        glutSolidCube(1.0);
+        glColor3f(0,0,0);
+        glutWireCube(1.0);
+        glPopMatrix();
         return; 
+    }
+
+    if (chaseStarted) {
+        glPushMatrix();
+        glTranslatef(ballX, 5.0f, enemyZ); 
+        
+        GLfloat enemySpecular[] = {1.0f, 0.0f, 0.0f, 1.0f}; 
+        GLfloat enemyShininess[] = {50.0f};
+        glMaterialfv(GL_FRONT, GL_SPECULAR, enemySpecular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, enemyShininess);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        glColor4f(0.1f, 0.0f, 0.0f, 0.9f);
+        if (quadricEnemy) {
+            gluSphere(quadricEnemy, 25.0f, 32, 32); 
+        }
+
+        glColor4f(1.0f, 0.0f, 0.0f, 0.3f);
+        if (quadricEnemy) {
+            gluSphere(quadricEnemy, 26.0f, 16, 16); 
+        }
+        glDisable(GL_BLEND);
+        
+        GLfloat defaultSpecular[] = {0.0f, 0.0f, 0.0f, 1.0f};
+        GLfloat defaultShininess[] = {0.0f};
+        glMaterialfv(GL_FRONT, GL_SPECULAR, defaultSpecular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, defaultShininess);
+        glPopMatrix();
     }
 
     LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
     for (int c = 0; c < 3; c++) {
-        if (!chunks[c]->active) continue;
+        if (!chunks[c]->active) {
+                continue;
+        }
         for (int i = 0; i < JUMLAH_PLATFORM; i++) {
             if (c == 2 && i == 0) {
                 continue; 
@@ -168,23 +264,26 @@ void drawGame3D() {
             if (c == 0 && i == 18) {
                 continue;
             }
+            
             glPushMatrix();
             glTranslatef(chunks[c]->x[i], chunks[c]->y[i], chunks[c]->z[i]); 
             glScalef(chunks[c]->sx[i], 0.5, chunks[c]->sz[i]); 
+            
             if (chunks[c]->type[i] == 0) { 
                 if (i == 18) {
                     glColor3f(0.0, 0.0, 1.0);
                 } 
                 else {
-                    glColor3f(0.0, 1.0, 0.0); 
+                    glColor3f(0.0, 1.0, 0.0);
                 } 
-            }
+            } 
             else {
-                glColor3f(1.0, 0.5, 0.0);  
+                glColor3f(0.3f, 0.3f, 0.3f);
             }            
+            
             glutSolidCube(1.0); 
-            glColor3f(0.0, 0.0, 0.0); 
-            glutWireCube(1.0); 
+            glColor3f(0.0, 1.0, 1.0);
+            glutWireCube(1.01); 
             glPopMatrix();
         }
     }

@@ -22,8 +22,13 @@ bool isCrouching = false;
 bool isSliding = false;
 bool isTestMap = false; 
 
-float entityZ = 15.0f;
-float entitySpeed = 0.11f;
+float enemyZ = 15.0f;
+float enemySpeed = 0.11f;
+
+GLUquadricObj* quadricEnemy = NULL;
+
+bool chaseStarted = false;
+int introTimer = 0;
 
 bool isHanging = false;
 bool isClimbing = false;

@@ -72,7 +72,9 @@ bool checkWallCollision(float testX, float testY, float testZ, float rX, float r
 
     LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
     for (int c = 0; c < 3; c++) {
-        if (!chunks[c]->active) continue; 
+        if (!chunks[c]->active) {
+            continue; 
+        }
         for (int i = 0; i < JUMLAH_PLATFORM; i++) {
             float minX = chunks[c]->x[i] - (chunks[c]->sx[i] / 2.0f);
 			float maxX = chunks[c]->x[i] + (chunks[c]->sx[i] / 2.0f);
@@ -93,7 +95,8 @@ bool checkWallCollision(float testX, float testY, float testZ, float rX, float r
 
 float getGroundY(float testX, float testZ, float oldY, float rX, float rZ) {
     if (isTestMap) {
-        float abyss = -10.0f; float highestGround = abyss;
+        float abyss = -10.0f;
+        float highestGround = abyss;
         if (testX > -50.0f && testX < 50.0f && testZ > -50.0f && testZ < 50.0f) {
             highestGround = 0.0f; 
         }
