@@ -1,14 +1,11 @@
 #include "ui.h"
+#include "../Core/globals.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
-extern bool chaseStarted;
-extern int introTimer;
-extern GLUquadricObj* quadricEnemy;
 
 GLuint loadTexture(const char* filename) {
     int width, height, channels;
@@ -70,13 +67,15 @@ void begin2D() {
 }
 
 void end2D() {
-    glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW); 
     glPopMatrix(); 
     glMatrixMode(GL_PROJECTION); 
     glPopMatrix(); 
     glMatrixMode(GL_MODELVIEW); 
     glEnable(GL_DEPTH_TEST); 
-    if (chaseStarted) glEnable(GL_FOG);
+    if (chaseStarted) {
+        glEnable(GL_FOG);
+    }
 }
 
 void drawMenu() {
@@ -106,7 +105,54 @@ void drawHelp() {
 void drawHUD() {
     begin2D(); 
     glColor3f(1, 1, 1);
-    
+
+    if (deathType > 0) {
+        glDisable(GL_TEXTURE_2D);
+        glColor3f(0.0f, 0.0f, 0.0f);
+        glBegin(GL_QUADS);
+        glVertex2f(0, 0);
+        glVertex2f(windowWidth, 0);
+        glVertex2f(windowWidth, windowHeight);
+        glVertex2f(0, windowHeight);
+        glEnd();
+
+        glColor3f(1.0f, 0.0f, 0.0f);
+        
+        if (deathType == 1) {
+            drawText(windowWidth / 2 - 120, windowHeight / 2 + 20, "YOU FELL INTO THE ABYSS.");
+        } 
+        else if (deathType == 2) {
+            drawText(windowWidth / 2 - 140, windowHeight / 2 + 20, "THE VOID OFFERS NO ESCAPE.");
+        } 
+        else if (deathType == 3) {
+            drawText(windowWidth / 2 - 130, windowHeight / 2 + 20, "YOU WERE CONSUMED BY 'IT'.");
+        } 
+        else if (deathType == 4) {
+            drawText(windowWidth / 2 - 80, windowHeight / 2 + 20, "YOU HESITATED.");
+        }
+
+        drawText(windowWidth / 2 - 70, windowHeight / 2 - 20, "PRESS ESC TO QUIT.");
+        end2D();
+        return; 
+    }
+
+    if (gameWon) {
+        glDisable(GL_TEXTURE_2D);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glBegin(GL_QUADS);
+        glVertex2f(0, 0);
+        glVertex2f(windowWidth, 0);
+        glVertex2f(windowWidth, windowHeight);
+        glVertex2f(0, windowHeight);
+        glEnd();
+
+        glColor3f(0.0f, 0.0f, 0.0f);
+        drawText(windowWidth / 2 - 120, windowHeight / 2 + 20, "YOU FACED YOUR FEARS.");
+        drawText(windowWidth / 2 - 40, windowHeight / 2 - 20, "YOU WIN.");
+        end2D();
+        return; 
+    }
+
     if (introTimer > 0) {
         if ((introTimer / 10) % 2 == 0) {
             glColor3f(1.0f, 0.0f, 0.0f);
@@ -118,11 +164,9 @@ void drawHUD() {
     char debugText[100]; 
     
     if (chaseStarted) {
-        float distanceToIT = abs(ballZ - enemyZ); 
+        float distanceToIT = fabs(ballZ - enemyZ);
         sprintf(debugText, "Speed: %.0f | Distance to IT: %.1f m", currentSpeed, distanceToIT);
-        if (distanceToIT < 15.0f && !isTestMap) {
-            glColor3f(1.0f, 0.2f, 0.2f);
-        }
+        if (distanceToIT < 15.0f && !isTestMap) glColor3f(1.0f, 0.2f, 0.2f);
     } 
     else {
         sprintf(debugText, "Speed: %.0f | Map: %s", currentSpeed, isTestMap ? "TEST ROOM" : "INFINITE MAP");
@@ -133,12 +177,22 @@ void drawHUD() {
     
     char stateText[50];
     if (isHanging) sprintf(stateText, "STATE: Peeking (W = Vault, S/C = Drop)");
-    else if (isClimbing) sprintf(stateText, "STATE: Wall Climbing!");
-    else if (isSliding) sprintf(stateText, "STATE: SLIDING!!!");
-    else if (isCrouching) sprintf(stateText, "STATE: Crouching");
-    else if (isSprinting) sprintf(stateText, "STATE: Sprinting");
-    else sprintf(stateText, "STATE: Walking");
-    
+    else if (isClimbing) {
+        sprintf(stateText, "STATE: Wall Climbing!");
+    }
+    else if (isSliding) {
+        sprintf(stateText, "STATE: SLIDING!!!");
+    }
+    else if (isCrouching) {
+        sprintf(stateText, "STATE: Crouching");
+    }
+    else if (isSprinting) {
+        sprintf(stateText, "STATE: Sprinting");
+    }
+    else {
+        sprintf(stateText, "STATE: Walking");
+    }
+
     drawText(20, windowHeight - 60, stateText);
 
     drawText(20, 20, "Q=Sprint | C=Slide | '='=Map");
@@ -164,17 +218,18 @@ void setupLighting() {
 }
 
 void drawGame3D() {
-    float eyeX = ballX;
-    float eyeY = ballY + currentHeight;
-    float eyeZ = ballZ;
+    if (deathType > 0 || gameWon) {
+        return;
+    }
+
+    float eyeX = ballX; float eyeY = ballY + currentHeight; float eyeZ = ballZ;
     float targetX = eyeX + (cos(pitch) * sin(yaw)); 
     float targetY = eyeY + sin(pitch); 
     float targetZ = eyeZ - (cos(pitch) * cos(yaw));
 
-    float distanceToIT = abs(ballZ - enemyZ);
+    float distanceToIT = fabs(ballZ - enemyZ);
     if ((introTimer > 0) || (chaseStarted && distanceToIT < 25.0f && !isTestMap)) {
-        
-        float shakeIntensity = (introTimer > 0) ? 0.15f : (25.0f - distanceToIT) * 0.006f; 
+        float shakeIntensity = (introTimer > 0) ? 0.04f : (25.0f - distanceToIT) * 0.002f; 
         
         float randomOffsetX = ((rand() % 100) / 100.0f - 0.5f) * shakeIntensity;
         float randomOffsetY = ((rand() % 100) / 100.0f - 0.5f) * shakeIntensity;
@@ -209,12 +264,13 @@ void drawGame3D() {
         glColor3f(0.2f, 0.2f, 1.0f);
         glutSolidCube(1.0);
         glColor3f(0,0,0);
-        glutWireCube(1.0); glPopMatrix();
+        glutWireCube(1.0); 
+        glPopMatrix();
 
-        glPushMatrix();
+        glPushMatrix(); 
         glTranslatef(4.5f, 3.0f, -10.5f);
         glScalef(3.0, 6.0, 3.0);
-        glColor3f(0.8f, 0.8f, 0.2f); 
+        glColor3f(0.8f, 0.8f, 0.2f);
         glutSolidCube(1.0);
         glColor3f(0,0,0);
         glutWireCube(1.0);
@@ -236,13 +292,45 @@ void drawGame3D() {
         
         glColor4f(0.1f, 0.0f, 0.0f, 0.9f);
         if (quadricEnemy) {
-            gluSphere(quadricEnemy, 25.0f, 32, 32); 
+            gluSphere(quadricEnemy, 25.0f, 32, 32);
+        }
+        
+        glColor4f(1.0f, 0.0f, 0.0f, 0.3f);
+        if (quadricEnemy) {
+            gluSphere(quadricEnemy, 26.0f, 16, 16);
+        }
+
+        glDisable(GL_BLEND);
+        
+        GLfloat defaultSpecular[] = {0.0f, 0.0f, 0.0f, 1.0f};
+        GLfloat defaultShininess[] = {0.0f};
+        glMaterialfv(GL_FRONT, GL_SPECULAR, defaultSpecular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, defaultShininess);
+        glPopMatrix();
+    }
+
+    if (frontEnemyActive) {
+        glPushMatrix();
+        glTranslatef(ballX, 5.0f, frontEnemyZ);
+        
+        GLfloat enemySpecular[] = {1.0f, 0.0f, 0.0f, 1.0f}; 
+        GLfloat enemyShininess[] = {50.0f};
+        glMaterialfv(GL_FRONT, GL_SPECULAR, enemySpecular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, enemyShininess);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        glColor4f(0.1f, 0.0f, 0.0f, 0.9f);
+        if (quadricEnemy) {
+            gluSphere(quadricEnemy, 25.0f, 32, 32);
         }
 
         glColor4f(1.0f, 0.0f, 0.0f, 0.3f);
         if (quadricEnemy) {
-            gluSphere(quadricEnemy, 26.0f, 16, 16); 
+            gluSphere(quadricEnemy, 26.0f, 16, 16);
         }
+
         glDisable(GL_BLEND);
         
         GLfloat defaultSpecular[] = {0.0f, 0.0f, 0.0f, 1.0f};
@@ -255,7 +343,7 @@ void drawGame3D() {
     LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
     for (int c = 0; c < 3; c++) {
         if (!chunks[c]->active) {
-                continue;
+            continue;
         }
         for (int i = 0; i < JUMLAH_PLATFORM; i++) {
             if (c == 2 && i == 0) {
@@ -272,17 +360,29 @@ void drawGame3D() {
             if (chunks[c]->type[i] == 0) { 
                 if (i == 18) {
                     glColor3f(0.0, 0.0, 1.0);
-                } 
+                }
                 else {
                     glColor3f(0.0, 1.0, 0.0);
-                } 
+                }
             } 
             else {
-                glColor3f(0.3f, 0.3f, 0.3f);
+                if (!chaseStarted) {
+                    glColor3f(1.0f, 0.5f, 0.0f);
+                }
+                else {
+                    glColor3f(0.3f, 0.3f, 0.3f);
+                }
             }            
             
             glutSolidCube(1.0); 
-            glColor3f(0.0, 1.0, 1.0);
+            
+            if (!chaseStarted) {
+                glColor3f(0.0, 0.0, 0.0);
+            } 
+            else {
+                glColor3f(0.0, 1.0, 1.0);
+            }
+            
             glutWireCube(1.01); 
             glPopMatrix();
         }

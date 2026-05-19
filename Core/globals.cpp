@@ -23,12 +23,22 @@ bool isSliding = false;
 bool isTestMap = false; 
 
 float enemyZ = 15.0f;
-float enemySpeed = 0.11f;
+float enemySpeed = 0.1f;
 
 GLUquadricObj* quadricEnemy = NULL;
 
 bool chaseStarted = false;
 int introTimer = 0;
+
+int checkpointsPassed = 0;
+float currentFogStart = 40.0f;
+float currentFogEnd = 120.0f;
+bool frontEnemyActive = false;
+float frontEnemyZ = 0.0f;
+
+bool gameWon = false;
+bool gameLost = false;
+int deathType = 0;
 
 bool isHanging = false;
 bool isClimbing = false;
