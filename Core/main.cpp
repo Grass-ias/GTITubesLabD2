@@ -19,23 +19,29 @@ void timer(int value) {
             introTimer--;
             if (introTimer == 0) {
                 chaseStarted = true;
-                enemyZ = ballZ + 25.0f;
+                enemyZ = ballZ + 60.0f;
             }
         }
         
         if (chaseStarted) {
             updateEnemy(); 
         }
-
         if (!isTestMap) {
-            float cMinX = currChunk.x[18] - (currChunk.sx[18] / 2.0f); 
-            float cMaxX = currChunk.x[18] + (currChunk.sx[18] / 2.0f);
-            float cMinZ = currChunk.z[18] - (currChunk.sz[18] / 2.0f); 
-            float cMaxZ = currChunk.z[18] + (currChunk.sz[18] / 2.0f);
+            float triggerZ = currChunk.z[18] + (currChunk.sz[18] / 2.0f); 
             
-            if (ballX >= cMinX && ballX <= cMaxX && ballZ >= cMinZ && ballZ <= cMaxZ) {
-                if (isGrounded && ballY <= currChunk.y[18] + 0.5f) {
-                    shiftChunks(); 
+            if (ballZ <= triggerZ) {
+                shiftChunks(); 
+
+                checkpointsPassed++;
+                
+                if (!chaseStarted && introTimer == 0) {
+                    introTimer = 150;
+                } 
+                else if (chaseStarted) {
+                    enemySpeed += 0.001f;
+                    
+                    if (currentFogEnd > 40.0f) currentFogEnd -= 10.0f;
+                    if (currentFogStart > 10.0f) currentFogStart -= 4.0f;
                 }
             }
         }
@@ -56,8 +62,9 @@ void display() {
         GLfloat fogColor[] = {0.02f, 0.02f, 0.02f, 1.0f};
         glFogfv(GL_FOG_COLOR, fogColor);
         glFogi(GL_FOG_MODE, GL_LINEAR);
-        glFogf(GL_FOG_START, 5.0f);
-        glFogf(GL_FOG_END, 35.0f);
+        
+        glFogf(GL_FOG_START, currentFogStart);
+        glFogf(GL_FOG_END, currentFogEnd);
     }
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 

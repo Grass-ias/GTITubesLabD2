@@ -57,6 +57,17 @@ extern float currentRadiusX;
 extern float currentRadiusZ; 
 extern float currentHeight; 
 
+extern int checkpointsPassed;
+extern float currentFogStart;
+extern float currentFogEnd;
+
+extern bool frontEnemyActive;
+extern float frontEnemyZ;
+
+extern bool gameWon;
+extern bool gameLost;
+extern int deathType;
+
 extern float yaw;   
 extern float pitch; 
 extern bool keys[256];

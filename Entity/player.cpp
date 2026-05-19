@@ -5,18 +5,18 @@
 
 void updatePlayer() {
     float dirX = sin(yaw);
-	float dirZ = -cos(yaw);
-	
+    float dirZ = -cos(yaw);
+    
     float rightX = cos(yaw);
-	float rightZ = sin(yaw);
-	
+    float rightZ = sin(yaw);
+    
     float inputX = 0.0f;
-	float inputZ = 0.0f;
-	
+    float inputZ = 0.0f;
+    
     bool hasInput = false;
 
     if (keys['w']) {
-		inputX += dirX;
+        inputX += dirX;
         inputZ += dirZ;
         hasInput = true;
     }
@@ -93,7 +93,8 @@ void updatePlayer() {
     if (isSliding) {
         if (currentSpeed < 0.02f) {
             isSliding = false;
-            velX = 0.0f; velZ = 0.0f;
+            velX = 0.0f;
+            velZ = 0.0f;
         }
         else if (isBraking) {
             isSliding = false;
@@ -199,9 +200,13 @@ void updatePlayer() {
     }
 
     if (!checkWallCollision(ballX, ballY, ballZ, targetRadX, targetRadZ, currentHeight)) {
-        currentRadiusX = targetRadX; currentRadiusZ = targetRadZ;
+        currentRadiusX = targetRadX;
+        currentRadiusZ = targetRadZ;
     } 
-    else { currentRadiusX = 0.3f; currentRadiusZ = 0.3f; }
+    else { 
+        currentRadiusX = 0.3f;
+        currentRadiusZ = 0.3f;
+    }
 
     velX += inputX * accel;
     velZ += inputZ * accel;
@@ -269,12 +274,6 @@ void updatePlayer() {
 
                             if (!chunksToCheck[c]->visited[i]) {
                                 chunksToCheck[c]->visited[i] = true;
-                                if (!chaseStarted && introTimer == 0) {
-                                    introTimer = 150;
-                                } 
-                                else if (chaseStarted) {
-                                    enemySpeed += 0.004f; 
-                                }
                             }                            
                         }
                     }
@@ -285,5 +284,25 @@ void updatePlayer() {
     else {
         ballY = nextY; 
         isGrounded = false; 
+    }
+
+    if (ballY < (isTestMap ? -15.0f : -30.0f)) {
+        if (isTestMap) {
+            ballX = 0;
+            ballY = 5.0f;
+            ballZ = 0;
+
+            velX = 0;
+            velZ = 0;
+            speedY = 0.0f;
+        }
+        else {
+            if (!chaseStarted) {
+                deathType = 1;
+            }
+            else {
+                deathType = 2;
+            }
+        }
     }
 }
