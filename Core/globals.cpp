@@ -1,6 +1,7 @@
 #include "globals.h"
 
-GLuint titleTexture; 
+GLuint titleTexture;
+GLuint enemyTexture; 
 int gameState = 0; 
 int windowWidth = 900;
 int windowHeight = 600;
@@ -22,8 +23,8 @@ bool isCrouching = false;
 bool isSliding = false;
 bool isTestMap = false; 
 
-float enemyZ = 15.0f;
-float enemySpeed = 0.1f;
+float backEnemyZ = 15.0f;
+float backEnemySpeed = 0.1f;
 
 GLUquadricObj* quadricEnemy = NULL;
 

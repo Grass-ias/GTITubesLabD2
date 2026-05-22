@@ -164,7 +164,7 @@ void drawHUD() {
     char debugText[100]; 
     
     if (chaseStarted) {
-        float distanceToIT = fabs(ballZ - enemyZ);
+        float distanceToIT = fabs(ballZ - backEnemyZ);
         sprintf(debugText, "Speed: %.0f | Distance to IT: %.1f m", currentSpeed, distanceToIT);
         if (distanceToIT < 15.0f && !isTestMap) glColor3f(1.0f, 0.2f, 0.2f);
     } 
@@ -227,7 +227,7 @@ void drawGame3D() {
     float targetY = eyeY + sin(pitch); 
     float targetZ = eyeZ - (cos(pitch) * cos(yaw));
 
-    float distanceToIT = fabs(ballZ - enemyZ);
+    float distanceToIT = fabs(ballZ - backEnemyZ);
     if ((introTimer > 0) || (chaseStarted && distanceToIT < 25.0f && !isTestMap)) {
         float shakeIntensity = (introTimer > 0) ? 0.04f : (25.0f - distanceToIT) * 0.002f; 
         
@@ -278,36 +278,38 @@ void drawGame3D() {
         return; 
     }
 
-    if (chaseStarted) {
-        glPushMatrix();
-        glTranslatef(ballX, 5.0f, enemyZ); 
-        
-        GLfloat enemySpecular[] = {1.0f, 0.0f, 0.0f, 1.0f}; 
-        GLfloat enemyShininess[] = {50.0f};
-        glMaterialfv(GL_FRONT, GL_SPECULAR, enemySpecular);
-        glMaterialfv(GL_FRONT, GL_SHININESS, enemyShininess);
+if (chaseStarted) {
+    glPushMatrix();
+    glTranslatef(ballX, 5.0f, backEnemyZ); 
+    
+    GLfloat enemySpecular[] = {1.0f, 0.0f, 0.0f, 1.0f}; 
+    GLfloat enemyShininess[] = {50.0f};
+    glMaterialfv(GL_FRONT, GL_SPECULAR, enemySpecular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, enemyShininess);
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
-        glColor4f(0.1f, 0.0f, 0.0f, 0.9f);
-        if (quadricEnemy) {
-            gluSphere(quadricEnemy, 25.0f, 32, 32);
-        }
-        
-        glColor4f(1.0f, 0.0f, 0.0f, 0.3f);
-        if (quadricEnemy) {
-            gluSphere(quadricEnemy, 26.0f, 16, 16);
-        }
-
-        glDisable(GL_BLEND);
-        
-        GLfloat defaultSpecular[] = {0.0f, 0.0f, 0.0f, 1.0f};
-        GLfloat defaultShininess[] = {0.0f};
-        glMaterialfv(GL_FRONT, GL_SPECULAR, defaultSpecular);
-        glMaterialfv(GL_FRONT, GL_SHININESS, defaultShininess);
-        glPopMatrix();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    glEnable(GL_TEXTURE_2D); 
+    glBindTexture(GL_TEXTURE_2D, enemyTexture);
+    glColor4f(1.0f, 1.0f, 1.0f, 0.9f);
+    if (quadricEnemy) {
+        gluSphere(quadricEnemy, 25.0f, 32, 32); 
     }
+    glDisable(GL_TEXTURE_2D);
+
+    glColor4f(1.0f, 0.0f, 0.0f, 0.3f);
+    if (quadricEnemy) {
+        gluSphere(quadricEnemy, 26.0f, 16, 16); 
+    }
+    glDisable(GL_BLEND);
+    
+    GLfloat defaultSpecular[] = {0.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat defaultShininess[] = {0.0f};
+    glMaterialfv(GL_FRONT, GL_SPECULAR, defaultSpecular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, defaultShininess);
+    glPopMatrix();
+}
 
     if (frontEnemyActive) {
         glPushMatrix();

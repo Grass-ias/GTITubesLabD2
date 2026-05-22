@@ -8,30 +8,30 @@ void updateEnemy() {
 
     if (!isTestMap) {
         if (chaseStarted) {
-            enemyZ -= enemySpeed; 
+            backEnemyZ -= backEnemySpeed; 
         }
 
-        if (chaseStarted && ballZ > enemyZ - 24.5f) {
-            deathType = 3;
+        if (chaseStarted && ballZ > backEnemyZ - 24.5f) {
+            if (frontEnemyActive) {
+                gameWon = true;
+            }
+            else {
+                deathType = 3;
+            }
         }
 
-        float distanceToEnemy = enemyZ - ballZ;
+        float distanceToEnemy = backEnemyZ - ballZ;
         
         if (chaseStarted && !frontEnemyActive && distanceToEnemy > 150.0f && checkpointsPassed >= 5) {
             frontEnemyActive = true;
             frontEnemyZ = ballZ - 100.0f; 
         }
-
+        
         if (frontEnemyActive) {
-            frontEnemyZ += enemySpeed; 
+            frontEnemyZ += backEnemySpeed; 
 
             if (ballZ < frontEnemyZ + 24.5f) {
-                if (keys['w']) {
-                    gameWon = true;
-                } 
-                else {
-                    deathType = 4;
-                }
+                deathType = 4;
             }
         }
     }

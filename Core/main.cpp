@@ -19,7 +19,7 @@ void timer(int value) {
             introTimer--;
             if (introTimer == 0) {
                 chaseStarted = true;
-                enemyZ = ballZ + 60.0f;
+                backEnemyZ = ballZ + 60.0f;
             }
         }
         
@@ -38,7 +38,7 @@ void timer(int value) {
                     introTimer = 150;
                 } 
                 else if (chaseStarted) {
-                    enemySpeed += 0.001f;
+                    backEnemySpeed += 0.001f;
                     
                     if (currentFogEnd > 40.0f) currentFogEnd -= 10.0f;
                     if (currentFogStart > 10.0f) currentFogStart -= 4.0f;
@@ -106,13 +106,15 @@ void init() {
     quadricEnemy = gluNewQuadric();
     gluQuadricDrawStyle(quadricEnemy, GLU_FILL);
     gluQuadricNormals(quadricEnemy, GLU_SMOOTH);
-    
+    gluQuadricTexture(quadricEnemy, GL_TRUE); 
+
     titleTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\sementara.png");
+    enemyTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\monster.png");
 }
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv); 
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); /*Pacakge*/
     glutInitWindowSize(windowWidth, windowHeight);
     glutCreateWindow("YOU CAN'T RUN FROM IT"); 
     
