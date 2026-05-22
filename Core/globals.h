@@ -15,6 +15,7 @@ struct LevelChunk {
 };
 
 extern GLuint titleTexture;
+extern GLuint enemyTexture;
 extern int gameState; 
 extern int windowWidth;
 extern int windowHeight;
@@ -36,8 +37,8 @@ extern bool isCrouching;
 extern bool isSliding;
 extern bool isTestMap; 
 
-extern float enemyZ;
-extern float enemySpeed;
+extern float backEnemyZ;
+extern float backEnemySpeed;
 
 extern GLUquadricObj* quadricEnemy;
 

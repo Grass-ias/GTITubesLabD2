@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/render.o Graphics/ui.o Map/map.o
-LINKOBJ  = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/render.o Graphics/ui.o Map/map.o
+OBJ      = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/ui.o Map/map.o
+LINKOBJ  = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/ui.o Map/map.o
 LIBS     = -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib" -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/lib" -static-libstdc++ -static-libgcc -mwindows -lglut32 -lglu32 -lopengl32 -lwinmm -lgdi32 -g3
 INCS     = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include"
 CXXINCS  = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include/c++"
@@ -38,9 +38,6 @@ Entity/enemy.o: Entity/enemy.cpp
 
 Entity/player.o: Entity/player.cpp
 	$(CPP) -c Entity/player.cpp -o Entity/player.o $(CXXFLAGS)
-
-Graphics/render.o: Graphics/render.cpp
-	$(CPP) -c Graphics/render.cpp -o Graphics/render.o $(CXXFLAGS)
 
 Graphics/ui.o: Graphics/ui.cpp
 	$(CPP) -c Graphics/ui.cpp -o Graphics/ui.o $(CXXFLAGS)
