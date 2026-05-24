@@ -1,5 +1,5 @@
-#include "input.h"
-#include "globals.h"
+#include "../Include/input.h"
+#include "../Include/globals.h"
 #include <GL/glut.h>
 #include <stdlib.h>
 
@@ -61,14 +61,14 @@ void keyboardDown(unsigned char key, int x, int y) {
         if (key == '=') {
             isTestMap = !isTestMap; 
             if (isTestMap) { 
-                ballX = 0.0f; 
-                ballY = 5.0f; 
-                ballZ = 0.0f; 
+                playerX = 0.0f; 
+                playerY = 5.0f; 
+                playerZ = 0.0f; 
             }
             else { 
-                ballX = respawnX; 
-                ballY = respawnY + 2.0f; 
-                ballZ = respawnZ; 
+                playerX = respawnX; 
+                playerY = respawnY + 2.0f; 
+                playerZ = respawnZ; 
             }
             velX = 0; velZ = 0;
         }
