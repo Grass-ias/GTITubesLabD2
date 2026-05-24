@@ -2,5 +2,6 @@
 #define ENEMY_H
 
 void updateEnemy();
+void initEnemy();
 
 #endif

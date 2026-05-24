@@ -2,5 +2,6 @@
 #define PLAYER_H
 
 void updatePlayer();
+void initPlayer();
 
 #endif

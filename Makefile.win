@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/ui.o Map/map.o
-LINKOBJ  = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/ui.o Map/map.o
+OBJ      = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/ui.o Map/map.o Physics/collision.o Audio/sound.o Core/engine.o Graphics/texture.o Graphics/display.o Graphics/lighting.o
+LINKOBJ  = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/ui.o Map/map.o Physics/collision.o Audio/sound.o Core/engine.o Graphics/texture.o Graphics/display.o Graphics/lighting.o
 LIBS     = -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib" -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/lib" -static-libstdc++ -static-libgcc -mwindows -lglut32 -lglu32 -lopengl32 -lwinmm -lgdi32 -g3
 INCS     = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include"
 CXXINCS  = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include/c++"
@@ -44,3 +44,21 @@ Graphics/ui.o: Graphics/ui.cpp
 
 Map/map.o: Map/map.cpp
 	$(CPP) -c Map/map.cpp -o Map/map.o $(CXXFLAGS)
+
+Physics/collision.o: Physics/collision.cpp
+	$(CPP) -c Physics/collision.cpp -o Physics/collision.o $(CXXFLAGS)
+
+Audio/sound.o: Audio/sound.cpp
+	$(CPP) -c Audio/sound.cpp -o Audio/sound.o $(CXXFLAGS)
+
+Core/engine.o: Core/engine.cpp
+	$(CPP) -c Core/engine.cpp -o Core/engine.o $(CXXFLAGS)
+
+Graphics/texture.o: Graphics/texture.cpp
+	$(CPP) -c Graphics/texture.cpp -o Graphics/texture.o $(CXXFLAGS)
+
+Graphics/display.o: Graphics/display.cpp
+	$(CPP) -c Graphics/display.cpp -o Graphics/display.o $(CXXFLAGS)
+
+Graphics/lighting.o: Graphics/lighting.cpp
+	$(CPP) -c Graphics/lighting.cpp -o Graphics/lighting.o $(CXXFLAGS)
