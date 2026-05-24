@@ -65,15 +65,15 @@ void updateLighting() {
         sunPos[3] = 1.0f;
 
         GLfloat sunAmbient[4];
-        sunAmbient[0] = 0.2f;
+        sunAmbient[0] = 0.0f;
         sunAmbient[1] = 0.0f;
         sunAmbient[2] = 0.0f;
         sunAmbient[3] = 1.0f;
 
         GLfloat sunDiffuse[4];
-        sunDiffuse[0] = 0.9f;
-        sunDiffuse[1] = 0.2f;
-        sunDiffuse[2] = 0.05f;
+        sunDiffuse[0] = 0.3f;
+        sunDiffuse[1] = 0.05f;
+        sunDiffuse[2] = 0.0f;
         sunDiffuse[3] = 1.0f;
 
         GLfloat sunSpecular[4];
