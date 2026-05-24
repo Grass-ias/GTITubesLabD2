@@ -1,6 +1,7 @@
-#include "player.h"
-#include "../Core/globals.h"
-#include "../Map/map.h" 
+#include "../Include/player.h"
+#include "../Include/globals.h"
+#include "../Include/collision.h"
+#include "../Include/map.h"
 #include <math.h>
 
 void updatePlayer() {
@@ -59,7 +60,7 @@ void updatePlayer() {
         targetMaxSpeed = 0.25f; 
     }
 
-    bool canStand = !checkWallCollision(ballX, ballY, ballZ, 0.05f, 0.05f, 1.2f);
+    bool canStand = !checkWallCollision(playerX, playerY, playerZ, 0.05f, 0.05f, 1.2f);
 
     if (tryingToCrouch) {
         if (isGrounded && !isSliding && currentSpeed > 0.10f && !isBraking) {
@@ -103,13 +104,13 @@ void updatePlayer() {
         } 
     }
 
-    float wallCheckX = ballX + dirX * 0.3f;
-    float wallCheckZ = ballZ + dirZ * 0.3f;
-    bool hittingWallForward = checkWallCollision(wallCheckX, ballY, wallCheckZ, currentRadiusX, currentRadiusZ, currentHeight);
-    bool headClear = !checkWallCollision(ballX, ballY, ballZ, 0.05f, 0.05f, 1.2f);
+    float wallCheckX = playerX + dirX * 0.3f;
+    float wallCheckZ = playerZ + dirZ * 0.3f;
+    bool hittingWallForward = checkClimbableWall(wallCheckX, playerY, wallCheckZ, currentRadiusX, currentRadiusZ, currentHeight);
+    bool headClear = !checkWallCollision(playerX, playerY, playerZ, 0.05f, 0.05f, 1.2f);
 
     if (!isGrounded && hittingWallForward && headClear) {
-        bool isLedge = !checkWallCollision(wallCheckX, ballY + 1.0f, wallCheckZ, currentRadiusX, currentRadiusZ, currentHeight);
+        bool isLedge = !checkWallCollision(wallCheckX, playerY + 1.0f, wallCheckZ, currentRadiusX, currentRadiusZ, currentHeight);
 
         if (isLedge) {
             if (isHanging) {
@@ -199,7 +200,7 @@ void updatePlayer() {
         targetRadZ = 0.3f + fabs(velZ/currentSpeed) * 0.6f;
     }
 
-    if (!checkWallCollision(ballX, ballY, ballZ, targetRadX, targetRadZ, currentHeight)) {
+    if (!checkWallCollision(playerX, playerY, playerZ, targetRadX, targetRadZ, currentHeight)) {
         currentRadiusX = targetRadX;
         currentRadiusZ = targetRadZ;
     } 
@@ -219,14 +220,14 @@ void updatePlayer() {
         velZ = (velZ / currentSpeed) * targetMaxSpeed;
     }
 
-    if (!checkWallCollision(ballX + velX, ballY, ballZ, currentRadiusX, currentRadiusZ, currentHeight)) {
-        ballX += velX;
+    if (!checkWallCollision(playerX + velX, playerY, playerZ, currentRadiusX, currentRadiusZ, currentHeight)) {
+        playerX += velX;
     }
     else {
         velX = 0;
     }
-    if (!checkWallCollision(ballX, ballY, ballZ + velZ, currentRadiusX, currentRadiusZ, currentHeight)) {
-        ballZ += velZ;
+    if (!checkWallCollision(playerX, playerY, playerZ + velZ, currentRadiusX, currentRadiusZ, currentHeight)) {
+        playerZ += velZ;
     }
     else {
         velZ = 0;
@@ -238,20 +239,20 @@ void updatePlayer() {
         keys[' '] = false; 
     }
 
-    float oldY = ballY;         
+    float oldY = playerY;         
     speedY += currentGravity;          
-    float nextY = ballY + speedY; 
+    float nextY = playerY + speedY; 
 
     if (speedY > 0.0f && !isHanging && !isClimbing) {
-        if (checkWallCollision(ballX, ballY + speedY, ballZ, 0.05f, 0.05f, currentHeight)) {
+        if (checkWallCollision(playerX, playerY + speedY, playerZ, 0.05f, 0.05f, currentHeight)) {
             speedY = 0.0f;
         }
     }
 
-    float groundY = getGroundY(ballX, ballZ, oldY, currentRadiusX, currentRadiusZ);
+    float groundY = getGroundY(playerX, playerZ, oldY, currentRadiusX, currentRadiusZ);
     
     if (nextY <= groundY) {
-        ballY = groundY;
+        playerY = groundY;
         speedY = 0;
         isGrounded = true; 
         if (!isTestMap) {
@@ -267,7 +268,7 @@ void updatePlayer() {
                         float minZ = chunksToCheck[c]->z[i] - (chunksToCheck[c]->sz[i] / 2.0f);
                         float maxZ = chunksToCheck[c]->z[i] + (chunksToCheck[c]->sz[i] / 2.0f);
 
-                        if (ballX >= minX && ballX <= maxX && ballZ >= minZ && ballZ <= maxZ) {
+                        if (playerX >= minX && playerX <= maxX && playerZ >= minZ && playerZ <= maxZ) {
                             respawnX = chunksToCheck[c]->x[i];
                             respawnY = chunksToCheck[c]->y[i] + 0.25f;
                             respawnZ = chunksToCheck[c]->z[i];
@@ -282,15 +283,15 @@ void updatePlayer() {
         }
     } 
     else {
-        ballY = nextY; 
+        playerY = nextY; 
         isGrounded = false; 
     }
 
-    if (ballY < (isTestMap ? -15.0f : -30.0f)) {
+    if (playerY < (isTestMap ? -15.0f : -30.0f)) {
         if (isTestMap) {
-            ballX = 0;
-            ballY = 5.0f;
-            ballZ = 0;
+            playerX = 0;
+            playerY = 5.0f;
+            playerZ = 0;
 
             velX = 0;
             velZ = 0;
@@ -305,4 +306,13 @@ void updatePlayer() {
             }
         }
     }
+}
+
+void initPlayer() {
+    playerX = currChunk.x[0]; 
+    playerY = currChunk.y[0] + 0.25f; 
+    playerZ = currChunk.z[0];
+    respawnX = playerX; 
+    respawnY = playerY; 
+    respawnZ = playerZ;
 }
