@@ -1,147 +1,113 @@
-#include "map.h"
+#include "../Include/map.h"
 #include <stdlib.h>
 
 LevelChunk generateLevelChunk(float startX, float startY, float startZ) {
     LevelChunk chunk; chunk.active = true;
     float currentX = startX, currentY = startY, currentZ = startZ; 
-    chunk.sx[0] = 4.0; chunk.sz[0] = 4.0;
+    
+    // Starting platform initialization
+    chunk.visited[0] = false;
+    chunk.type[0] = 0;
+    chunk.x[0] = startX;
+    chunk.y[0] = startY;
+    chunk.z[0] = startZ;
+    chunk.sx[0] = 4.0f; 
+    chunk.sy[0] = 20.0f;
+    chunk.sz[0] = 4.0f;
+    chunk.hasPipe[0] = false;
+    chunk.color[0] = 1.0f;
 
-    for (int i = 0; i < JUMLAH_PLATFORM; i++) {
-    	chunk.visited[i] = false;
-        chunk.x[i] = currentX;
-		chunk.y[i] = currentY;
-		chunk.z[i] = currentZ;
-        if (i == 0 || i == 6 || i == 12 || i == 18) {
+    int consecutiveStones = 0;
+
+    for (int i = 1; i < JUMLAH_PLATFORM; i++) {
+        chunk.visited[i] = false;
+
+        if (i == 6 || i == 12 || i == 18) {
+            // Checkpoint Platform (Standard large, safe size)
             chunk.type[i] = 0;
-			chunk.sx[i] = 4.0;
-			chunk.sz[i] = 4.0; 
-            currentZ -= (chunk.sz[i] / 2.0f) + 2.0f;
-			currentX += ((rand() % 200) / 100.0) - 1.0; 
+            chunk.sx[i] = 4.0f;
+            chunk.sy[i] = 20.0f;
+            chunk.sz[i] = 4.0f; 
+            chunk.hasPipe[i] = false;
+            chunk.color[i] = 1.0f;
+            consecutiveStones = 0; // Reset consecutive pattern tracking
+
+            // Calculate currentZ by subtracting exactly half of previous, a fixed safe gap, and half of current
+            float prevScaleZ = chunk.sz[i-1];
+            float gapZ = 3.0f; 
+            chunk.z[i] = chunk.z[i-1] - (prevScaleZ / 2.0f) - gapZ - (chunk.sz[i] / 2.0f);
+
+            // Checkpoints remain relatively centered
+            chunk.x[i] = chunk.x[i-1] + ((rand() % 200) / 100.0f) - 1.0f;
+            chunk.y[i] = chunk.y[i-1] + ((rand() % 100) / 100.0f) - 0.5f; 
         } 
         else {
+            // Regular Platform with Pattern A/B chunk pattern generator
             chunk.type[i] = 1; 
-            chunk.sx[i] = ((rand() % 150) / 100.0) + 1.2f; chunk.sz[i] = ((rand() % 150) / 100.0) + 1.2f; 
-            float prevScaleZ = (i == 0) ? 4.0f : chunk.sz[i-1];
-			float gapZ = ((rand() % 100) / 100.0) + 1.2f; 
-            currentZ -= (prevScaleZ / 2.0f) + gapZ + (chunk.sz[i] / 2.0f);
-			currentY += ((rand() % 100) / 100.0) - 0.3f; 
-            float maxOffsetX = 2.5f;
-			currentX += ((rand() % (int)(maxOffsetX * 200)) / 100.0f) - maxOffsetX; 
-        }
-    }
-    return chunk; 
-}
+            chunk.sx[i] = 4.0f; // Fixed standard width
+            chunk.sy[i] = ((rand() % 1500) / 100.0f) + 15.0f;
+            chunk.hasPipe[i] = false;
+            chunk.color[i] = ((rand() % 61) / 100.0f) + 0.3f;
 
-bool checkWallCollision(float testX, float testY, float testZ, float rX, float rZ, float h) {
-    if (isTestMap) {
-        float minX = -2.0f, maxX = 2.0f, minZ = -15.0f, maxZ = -10.0f;
-        float platTop = 3.0f, platBottom = 0.8f; 
-        if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
-            if (testY < platTop - 0.05f && testY + h > platBottom) {
-           		return true;
-			}
-        }
-        
-        minX = -5.0f;
-		maxX = -3.0f;
-		minZ = -10.0f;
-		maxZ = -8.0f;
-		
-        platTop = 1.0f;
-		platBottom = -1.0f;
-        if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
-            if (testY < platTop - 0.05f && testY + h > platBottom) {
-            	return true; 
-			}
-        }
+            float gapZ = 0.0f;
 
-        minX = 3.0f;
-		maxX = 6.0f;
-		minZ = -12.0f;
-		maxZ = -9.0f;
-		
-        platTop = 6.0f;
-		platBottom = -50.0f; 
-        if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
-            if (testY < platTop - 0.05f && testY + h > platBottom) {
-            	return true;
-			}
-        }
-        return false;
-    }
-
-    LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
-    for (int c = 0; c < 3; c++) {
-        if (!chunks[c]->active) {
-            continue; 
-        }
-        for (int i = 0; i < JUMLAH_PLATFORM; i++) {
-            float minX = chunks[c]->x[i] - (chunks[c]->sx[i] / 2.0f);
-			float maxX = chunks[c]->x[i] + (chunks[c]->sx[i] / 2.0f);
-            float minZ = chunks[c]->z[i] - (chunks[c]->sz[i] / 2.0f);
-			float maxZ = chunks[c]->z[i] + (chunks[c]->sz[i] / 2.0f);
-            float platTop = chunks[c]->y[i] + 0.25f; 
-            float platBottom = -50.0f; 
-
-            if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
-                if (testY < platTop - 0.05f && testY + h > platBottom) {
-                	return true; 
-				}
-            }
-        }
-    }
-    return false; 
-}
-
-float getGroundY(float testX, float testZ, float oldY, float rX, float rZ) {
-    if (isTestMap) {
-        float abyss = -10.0f;
-        float highestGround = abyss;
-        if (testX > -50.0f && testX < 50.0f && testZ > -50.0f && testZ < 50.0f) {
-            highestGround = 0.0f; 
-        }
-        if (testX > -2.0f && testX < 2.0f && testZ > -15.0f && testZ < -10.0f) { 
-			if (oldY >= 3.0f - 0.1f) {
-				highestGround = 3.0f;
-			}
-        }
-        if (testX > -5.0f && testX < -3.0f && testZ > -10.0f && testZ < -8.0f) {
-            if (oldY >= 1.0f - 0.1f) { 
-                highestGround = 1.0f;
-            }
-        }
-        if (testX > 3.0f && testX < 6.0f && testZ > -12.0f && testZ < -9.0f) {
-            if (oldY >= 6.0f - 0.1f) {
-                highestGround = 6.0f;
-            }
-        }
-        return highestGround;
-    }
-
-    float abyss = -100.0f;
-    float highestGround = abyss;
-    LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
-    for (int c = 0; c < 3; c++) {
-        if (!chunks[c]->active) continue;
-        for (int i = 0; i < JUMLAH_PLATFORM; i++) {
-            float minX = chunks[c]->x[i] - (chunks[c]->sx[i] / 2.0f);
-            float maxX = chunks[c]->x[i] + (chunks[c]->sx[i] / 2.0f);
-            float minZ = chunks[c]->z[i] - (chunks[c]->sz[i] / 2.0f);
-            float maxZ = chunks[c]->z[i] + (chunks[c]->sz[i] / 2.0f);
-
-            float platTop = chunks[c]->y[i] + 0.25f;
-            float platBottom = chunks[c]->y[i] - 0.25f;
-            
-            if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
-                if (oldY >= platTop - 0.1f) {
-                    if (platTop > highestGround) {
-                        highestGround = platTop;
-                    }
+            if (consecutiveStones > 0) {
+                // Pattern B: Stepping Stones (continuation)
+                chunk.sz[i] = 3.0f;
+                gapZ = 1.5f; // Small gapZ jumps
+                consecutiveStones--;
+            } 
+            else {
+                // Determine new pattern type
+                int r = rand() % 2;
+                if (r == 0) {
+                    // Pattern A: The Bridge (1 very long platform)
+                    chunk.sz[i] = 15.0f;
+                    gapZ = ((rand() % 601) / 100.0f) + 6.0f;
+                } 
+                else {
+                    // Pattern B: Stepping Stones (3 consecutive short platforms)
+                    chunk.sz[i] = 3.0f;
+                    gapZ = 1.5f; // Small gapZ jumps
+                    consecutiveStones = 2; // Sets the next 2 platforms to be stepping stones too
                 }
             }
+
+            float prevScaleZ = chunk.sz[i-1];
+            float halfSizeZ = chunk.sz[i] / 2.0f;
+
+            // Safety Bubble: Ensure gapZ + halfSizeZ >= 5.0f for Pattern A (non-stepping stones)
+            if (consecutiveStones == 0 && gapZ + halfSizeZ < 5.0f) {
+                gapZ = 5.0f - halfSizeZ;
+            }
+            if (gapZ < 1.2f) {
+                gapZ = 1.2f;
+            }
+
+            chunk.z[i] = chunk.z[i-1] - (prevScaleZ / 2.0f) - gapZ - halfSizeZ;
+            chunk.y[i] = chunk.y[i-1] + ((rand() % 100) / 100.0f) - 0.3f; 
+
+            float maxOffsetX = 2.0f;
+            chunk.x[i] = chunk.x[i-1] + ((rand() % (int)(maxOffsetX * 200)) / 100.0f) - maxOffsetX; 
         }
     }
-    return highestGround; 
+
+    // Background scenery buildings generation
+    float totalLength = startZ - chunk.z[JUMLAH_PLATFORM - 1];
+    for (int bgIdx = 0; bgIdx < 10; bgIdx++) {
+        if (bgIdx < 5) {
+            // Left side: X between -25.0f and -50.0f
+            chunk.bgX[bgIdx] = -(((rand() % 2500) / 100.0f) + 25.0f);
+        } else {
+            // Right side: X between 25.0f and 50.0f
+            chunk.bgX[bgIdx] = ((rand() % 2500) / 100.0f) + 25.0f;
+        }
+        chunk.bgZ[bgIdx] = startZ - (((rand() % 1000) / 1000.0f) * totalLength);
+        chunk.bgWidth[bgIdx] = ((rand() % 1201) / 100.0f) + 8.0f;
+        chunk.bgHeight[bgIdx] = ((rand() % 5001) / 100.0f) + 50.0f;
+    }
+
+    return chunk; 
 }
 
 void shiftChunks() {

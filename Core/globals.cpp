@@ -1,16 +1,18 @@
-#include "globals.h"
+#include "../Include/globals.h"
 
 GLuint titleTexture;
 GLuint enemyTexture; 
+GLuint buildingTexture;
+GLuint bgTexture;
 int gameState = 0; 
 int windowWidth = 900;
 int windowHeight = 600;
 
 LevelChunk prevChunk, currChunk, nextChunk;
 
-float ballX = 0.0f;
-float ballY = 0.0f; 
-float ballZ = -5.0f;
+float playerX = 0.0f;
+float playerY = 0.0f; 
+float playerZ = -5.0f;
 
 float velX = 0.0f; 
 float velZ = 0.0f;
@@ -23,8 +25,10 @@ bool isCrouching = false;
 bool isSliding = false;
 bool isTestMap = false; 
 
-float backEnemyZ = 15.0f;
+float enemyY = 5.0f;
+float enemyZ = 15.0f;
 float backEnemySpeed = 0.1f;
+float enemyYTrackingTimer = 0.0f;
 
 GLUquadricObj* quadricEnemy = NULL;
 
