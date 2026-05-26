@@ -14,24 +14,24 @@ struct LevelChunk {
     bool active; 
     float color[JUMLAH_PLATFORM];
 
-    // Pipe obstacles on platforms
     bool hasPipe[JUMLAH_PLATFORM];
     float pipeY[JUMLAH_PLATFORM];
     float pipeZ[JUMLAH_PLATFORM];
     float pipeRadius[JUMLAH_PLATFORM];
     float pipeLength[JUMLAH_PLATFORM];
-
-    // Background scenery buildings
-    float bgX[10];
-    float bgZ[10];
-    float bgWidth[10];
-    float bgHeight[10];
+    float bgX[40];
+    float bgY[40];
+    float bgZ[40];
+    float bgWidth[40];
+    float bgHeight[40];
+    int platTexIdx[JUMLAH_PLATFORM];
+    int bgTexIdx[40];
 };
 
 extern GLuint titleTexture;
 extern GLuint enemyTexture;
-extern GLuint buildingTexture;
-extern GLuint bgTexture;
+extern GLuint sideTex[3];
+extern GLuint topTex[3];
 extern int gameState; 
 extern int windowWidth;
 extern int windowHeight;

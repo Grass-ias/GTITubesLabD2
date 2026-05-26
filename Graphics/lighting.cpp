@@ -1,6 +1,6 @@
+#include "../Include/lighting.h"
 #include <GL/glut.h>
 #include "../Include/globals.h"
-#include "../Include/lighting.h"
 #include <math.h>
 
 void setupLighting() {
@@ -8,9 +8,36 @@ void setupLighting() {
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+    glEnable(GL_FOG);
+    glFogi(GL_FOG_MODE, GL_LINEAR);
+    glFogf(GL_FOG_START, 15.0f);
+    glFogf(GL_FOG_END, 70.0f);
+    float fogColorArray[4];
+    fogColorArray[0] = 0.1f;
+    fogColorArray[1] = 0.15f;
+    fogColorArray[2] = 0.18f;
+    fogColorArray[3] = 1.0f;
+    glFogfv(GL_FOG_COLOR, fogColorArray);
 }
 
 void updateLighting() {
+    glEnable(GL_FOG);
+    glFogi(GL_FOG_MODE, GL_LINEAR);
+    glFogf(GL_FOG_START, 15.0f);
+    glFogf(GL_FOG_END, 70.0f);
+    float fogColorArray[4];
+    if (!chaseStarted) {
+        fogColorArray[0] = 0.1f;
+        fogColorArray[1] = 0.15f;
+        fogColorArray[2] = 0.18f;
+        fogColorArray[3] = 1.0f;
+    } else {
+        fogColorArray[0] = 0.08f;
+        fogColorArray[1] = 0.0f;
+        fogColorArray[2] = 0.0f;
+        fogColorArray[3] = 1.0f;
+    }
+    glFogfv(GL_FOG_COLOR, fogColorArray);
     if (!chaseStarted) {
         glEnable(GL_LIGHT0);
         for (int l = 1; l < 8; l++) {
@@ -24,21 +51,21 @@ void updateLighting() {
         sunPos[3] = 1.0f;
 
         GLfloat sunAmbient[4];
-        sunAmbient[0] = 0.2f;
-        sunAmbient[1] = 0.2f;
+        sunAmbient[0] = 0.15f;
+        sunAmbient[1] = 0.18f;
         sunAmbient[2] = 0.2f;
         sunAmbient[3] = 1.0f;
 
         GLfloat sunDiffuse[4];
-        sunDiffuse[0] = 1.0f;
-        sunDiffuse[1] = 1.0f;
-        sunDiffuse[2] = 0.8f;
+        sunDiffuse[0] = 0.9f;
+        sunDiffuse[1] = 0.85f;
+        sunDiffuse[2] = 0.6f;
         sunDiffuse[3] = 1.0f;
 
         GLfloat sunSpecular[4];
         sunSpecular[0] = 1.0f;
-        sunSpecular[1] = 1.0f;
-        sunSpecular[2] = 1.0f;
+        sunSpecular[1] = 0.8f;
+        sunSpecular[2] = 0.8f;
         sunSpecular[3] = 1.0f;
 
         glLightfv(GL_LIGHT0, GL_POSITION, sunPos);
@@ -47,9 +74,9 @@ void updateLighting() {
         glLightfv(GL_LIGHT0, GL_SPECULAR, sunSpecular);
 
         GLfloat standardAmbient[4];
-        standardAmbient[0] = 0.2f;
-        standardAmbient[1] = 0.2f;
-        standardAmbient[2] = 0.2f;
+        standardAmbient[0] = 0.1f;
+        standardAmbient[1] = 0.1f;
+        standardAmbient[2] = 0.1f;
         standardAmbient[3] = 1.0f;
 
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, standardAmbient);
@@ -132,7 +159,10 @@ void updateLighting() {
         ActiveLight activeLights[6];
         int numActiveLights = 0;
 
-        LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
+        LevelChunk* chunks[3];
+        chunks[0] = &prevChunk;
+        chunks[1] = &currChunk;
+        chunks[2] = &nextChunk;
         for (int c = 0; c < 3; c++) {
             if (!chunks[c]->active) continue;
             for (int i = 0; i < JUMLAH_PLATFORM; i++) {
@@ -234,4 +264,28 @@ void updateLighting() {
             }
         }
     }
+}
+
+void glShadowProjection(float * l, float * e, float * n) {
+    float d, c;
+    float shadowMat[16];
+    d = n[0]*l[0] + n[1]*l[1] + n[2]*l[2];
+    c = e[0]*n[0] + e[1]*n[1] + e[2]*n[2] - d;
+    shadowMat[0] = l[0]*n[0]+c; 
+    shadowMat[4] = l[0]*n[1]; 
+    shadowMat[8] = l[0]*n[2]; 
+    shadowMat[12] = -l[0]*(e[0]*n[0]+e[1]*n[1]+e[2]*n[2]);
+    shadowMat[1] = l[1]*n[0]; 
+    shadowMat[5] = l[1]*n[1]+c; 
+    shadowMat[9] = l[1]*n[2]; 
+    shadowMat[13] = -l[1]*(e[0]*n[0]+e[1]*n[1]+e[2]*n[2]);
+    shadowMat[2] = l[2]*n[0]; 
+    shadowMat[6] = l[2]*n[1]; 
+    shadowMat[10] = l[2]*n[2]+c; 
+    shadowMat[14] = -l[2]*(e[0]*n[0]+e[1]*n[1]+e[2]*n[2]);
+    shadowMat[3] = n[0]; 
+    shadowMat[7] = n[1]; 
+    shadowMat[11] = n[2]; 
+    shadowMat[15] = -d;
+    glMultMatrixf(shadowMat);
 }

@@ -36,8 +36,6 @@ void updateEnemy() {
             }
         }
 
-        // Smooth Y Tracking (Tracking Logic)
-        // If playerY is consistently higher than enemyY by 5.0 units for more than 1 second (approx. 60 frames, delta time = 16ms)
         if (playerY - enemyY > 5.0f) {
             enemyYTrackingTimer += 0.016f;
         } else {
@@ -45,10 +43,8 @@ void updateEnemy() {
         }
 
         if (enemyYTrackingTimer > 1.0f) {
-            // Interpolate gradually towards player Y
             enemyY += (playerY - enemyY) * 0.02f;
         } else {
-            // Gradually return to the base height of 5.0f
             if (enemyY > 5.0f) {
                 enemyY += (5.0f - enemyY) * 0.01f;
             }

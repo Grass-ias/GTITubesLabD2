@@ -3,19 +3,21 @@
 
 bool checkWallCollision(float testX, float testY, float testZ, float rX, float rZ, float h) {
     if (isTestMap) {
-        float minX = -2.0f, maxX = 2.0f, minZ = -15.0f, maxZ = -10.0f;
-        float platTop = 3.0f, platBottom = 0.8f; 
+        float minX = -2.0f;
+        float maxX = 2.0f;
+        float minZ = -15.0f;
+        float maxZ = -10.0f;
+        float platTop = 3.0f;
+        float platBottom = 0.8f; 
         if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
             if (testY < platTop - 0.05f && testY + h > platBottom) {
                 return true;
             }
         }
-        
         minX = -5.0f;
         maxX = -3.0f;
         minZ = -10.0f;
         maxZ = -8.0f;
-        
         platTop = 1.0f;
         platBottom = -1.0f;
         if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
@@ -23,12 +25,10 @@ bool checkWallCollision(float testX, float testY, float testZ, float rX, float r
                 return true; 
             }
         }
-
         minX = 3.0f;
         maxX = 6.0f;
         minZ = -12.0f;
         maxZ = -9.0f;
-        
         platTop = 6.0f;
         platBottom = -50.0f; 
         if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
@@ -38,21 +38,21 @@ bool checkWallCollision(float testX, float testY, float testZ, float rX, float r
         }
         return false;
     }
-
-    LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
+    LevelChunk* chunks[3];
+    chunks[0] = &prevChunk;
+    chunks[1] = &currChunk;
+    chunks[2] = &nextChunk;
     for (int c = 0; c < 3; c++) {
         if (!chunks[c]->active) {
             continue; 
         }
         for (int i = 0; i < JUMLAH_PLATFORM; i++) {
-            // Building block collision (tall vertical rectangular prism)
             float minX = chunks[c]->x[i] - (chunks[c]->sx[i] / 2.0f);
             float maxX = chunks[c]->x[i] + (chunks[c]->sx[i] / 2.0f);
             float minZ = chunks[c]->z[i] - (chunks[c]->sz[i] / 2.0f);
             float maxZ = chunks[c]->z[i] + (chunks[c]->sz[i] / 2.0f);
             float platTop = chunks[c]->y[i] + 0.25f; 
             float platBottom = chunks[c]->y[i] - chunks[c]->sy[i] + 0.25f; 
-
             if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
                 if (testY < platTop - 0.05f && testY + h > platBottom) {
                     return true; 
@@ -87,10 +87,12 @@ float getGroundY(float testX, float testZ, float oldY, float rX, float rZ) {
         }
         return highestGround;
     }
-
     float abyss = -100.0f;
     float highestGround = abyss;
-    LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
+    LevelChunk* chunks[3];
+    chunks[0] = &prevChunk;
+    chunks[1] = &currChunk;
+    chunks[2] = &nextChunk;
     for (int c = 0; c < 3; c++) {
         if (!chunks[c]->active) continue;
         for (int i = 0; i < JUMLAH_PLATFORM; i++) {
@@ -98,9 +100,7 @@ float getGroundY(float testX, float testZ, float oldY, float rX, float rZ) {
             float maxX = chunks[c]->x[i] + (chunks[c]->sx[i] / 2.0f);
             float minZ = chunks[c]->z[i] - (chunks[c]->sz[i] / 2.0f);
             float maxZ = chunks[c]->z[i] + (chunks[c]->sz[i] / 2.0f);
-
             float platTop = chunks[c]->y[i] + 0.25f;
-            
             if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
                 if (oldY >= platTop - 0.1f) {
                     if (platTop > highestGround) {
@@ -115,8 +115,10 @@ float getGroundY(float testX, float testZ, float oldY, float rX, float rZ) {
 
 bool checkClimbableWall(float testX, float testY, float testZ, float rX, float rZ, float h) {
     if (isTestMap) return false;
-
-    LevelChunk* chunks[3] = {&prevChunk, &currChunk, &nextChunk};
+    LevelChunk* chunks[3];
+    chunks[0] = &prevChunk;
+    chunks[1] = &currChunk;
+    chunks[2] = &nextChunk;
     for (int c = 0; c < 3; c++) {
         if (!chunks[c]->active) continue;
         for (int i = 0; i < JUMLAH_PLATFORM; i++) {
@@ -126,7 +128,6 @@ bool checkClimbableWall(float testX, float testY, float testZ, float rX, float r
             float maxZ = chunks[c]->z[i] + (chunks[c]->sz[i] / 2.0f);
             float platTop = chunks[c]->y[i] + 0.25f;
             float platBottom = chunks[c]->y[i] - chunks[c]->sy[i] + 0.25f;
-
             if (testX + rX > minX && testX - rX < maxX && testZ + rZ > minZ && testZ - rZ < maxZ) {
                 if (testY < platTop - 0.05f && testY + h > platBottom) {
                     return true;

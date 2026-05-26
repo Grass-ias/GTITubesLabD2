@@ -3,14 +3,9 @@
 
 #include "globals.h"
 
-void drawImage(GLuint tex, float x, float y, float w, float h);
-void drawText(float x, float y, const char* text);
-void begin2D();
-void end2D();
-void drawMenu();
-void drawHelp();
-void drawHUD();
-void drawTexturedBuilding(float sizeX, float sizeY, float sizeZ);
+void drawTexturedBuilding(float sizeX, float sizeY, float sizeZ, GLuint texSide, GLuint texTop);
+void setupBuildingMaterial(float brightness);
+void resetBuildingMaterial();
 void drawGame3D();
 
 #endif

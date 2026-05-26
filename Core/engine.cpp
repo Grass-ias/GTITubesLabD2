@@ -10,6 +10,7 @@
 #include "../Include/player.h"
 #include "../Include/enemy.h"
 #include "../Include/map.h"
+#include "../Include/ui.h"
 #include "../Include/display.h"
 #include "../Include/texture.h"
 #include "../Include/sound.h"
@@ -24,6 +25,8 @@ void timer(int value) {
             if (introTimer == 0) {
                 chaseStarted = true;
                 enemyZ = playerZ + 60.0f;
+                currentFogStart = 15.0f;
+                currentFogEnd = 70.0f;
             }
         }
         
@@ -57,17 +60,17 @@ void timer(int value) {
 
 void display() {    
     if (!chaseStarted && introTimer == 0) {
-        glClearColor(0.8f, 0.9f, 1.0f, 1.0f); 
+        glClearColor(0.1f, 0.15f, 0.18f, 1.0f); 
         glEnable(GL_FOG);
         GLfloat fogColor[4];
-        fogColor[0] = 0.8f;
-        fogColor[1] = 0.9f;
-        fogColor[2] = 1.0f;
+        fogColor[0] = 0.1f;
+        fogColor[1] = 0.15f;
+        fogColor[2] = 0.18f;
         fogColor[3] = 1.0f;
         glFogfv(GL_FOG_COLOR, fogColor);
         glFogi(GL_FOG_MODE, GL_LINEAR);
-        glFogf(GL_FOG_START, 40.0f);
-        glFogf(GL_FOG_END, 120.0f);
+        glFogf(GL_FOG_START, 15.0f);
+        glFogf(GL_FOG_END, 70.0f);
     } 
     else {
         glClearColor(0.02f, 0.02f, 0.02f, 1.0f); 
@@ -79,7 +82,6 @@ void display() {
         fogColor[3] = 1.0f;
         glFogfv(GL_FOG_COLOR, fogColor);
         glFogi(GL_FOG_MODE, GL_LINEAR);
-        
         glFogf(GL_FOG_START, currentFogStart);
         glFogf(GL_FOG_END, currentFogEnd);
     }
@@ -88,7 +90,7 @@ void display() {
     glLoadIdentity();
     
     if (gameState == 0) {
-        drawMenu(); 
+        drawMenu();
     } 
     else if (gameState == 1) { 
         drawGame3D(); 
@@ -120,7 +122,7 @@ void initEngine() {
     glEnable(GL_DEPTH_TEST); 
     setupLighting(); 
     
-    srand(time(NULL)); 
+    srand((unsigned)time(NULL)); 
     
     for(int i = 0; i < 256; i++) {
         keys[i] = false;
@@ -139,8 +141,12 @@ void initEngine() {
     initAudio();
     
     titleTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\sementara.png");
-    buildingTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\building.png");
-    bgTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\sementara.png");
+    sideTex[0] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\building1.png");
+    topTex[0] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\top1.png");
+    sideTex[1] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\building2.png");
+    topTex[1] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\top2.png");
+    sideTex[2] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\building3.png");
+    topTex[2] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\top3.png");
 }
 
 void setupCallbacks() {

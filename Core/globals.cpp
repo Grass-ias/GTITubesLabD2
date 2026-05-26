@@ -2,8 +2,8 @@
 
 GLuint titleTexture;
 GLuint enemyTexture; 
-GLuint buildingTexture;
-GLuint bgTexture;
+GLuint sideTex[3];
+GLuint topTex[3];
 int gameState = 0; 
 int windowWidth = 900;
 int windowHeight = 600;
@@ -36,8 +36,8 @@ bool chaseStarted = false;
 int introTimer = 0;
 
 int checkpointsPassed = 0;
-float currentFogStart = 40.0f;
-float currentFogEnd = 120.0f;
+float currentFogStart = 15.0f;
+float currentFogEnd = 70.0f;
 bool frontEnemyActive = false;
 float frontEnemyZ = 0.0f;
 
