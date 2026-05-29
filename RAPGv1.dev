@@ -24,20 +24,12 @@ HostApplication=
 UseCustomMakefile=0
 CustomMakefile=
 CommandLine=
-<<<<<<< HEAD
-Folders=Audio,Core,Entity,Graphics,Include,Map,Physics
-=======
 Folders=Audio,Core,Entity,Graphics,Include,Map,Physics,Assets,Textures
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=1
 CompilerSettings=0000000000000000001000000
-<<<<<<< HEAD
-UnitCount=29
-=======
 UnitCount=39
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 
 [VersionInfo]
 Major=1
@@ -54,54 +46,32 @@ LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
 ProductName=
-<<<<<<< HEAD
-ProductVersion=1.0.0.0
-=======
 ProductVersion=
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit1]
-<<<<<<< HEAD
-FileName=Core\globals.cpp
-CompileCpp=1
-=======
 FileName=Core\engine.cpp
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Folder=Core
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-<<<<<<< HEAD
-
-[Unit2]
-FileName=Core\input.cpp
-CompileCpp=1
-=======
 CompileCpp=1
 
 [Unit2]
 FileName=Core\globals.cpp
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Folder=Core
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-<<<<<<< HEAD
-
-[Unit3]
-FileName=Core\main.cpp
-=======
 CompileCpp=1
 
 [Unit3]
 FileName=Core\input.cpp
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Folder=Core
 Compile=1
 Link=1
@@ -111,51 +81,23 @@ BuildCmd=
 CompileCpp=1
 
 [Unit4]
-<<<<<<< HEAD
-FileName=Entity\enemy.cpp
-CompileCpp=1
-Folder=Entity
-=======
 FileName=Core\main.cpp
 Folder=Core
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-<<<<<<< HEAD
-
-[Unit5]
-FileName=Entity\player.cpp
-CompileCpp=1
-=======
 CompileCpp=1
 
 [Unit5]
 FileName=Entity\dice.cpp
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Folder=Entity
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-<<<<<<< HEAD
-
-[Unit6]
-FileName=Graphics\sementara.png
-Folder=Graphics
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit7]
-FileName=Graphics\ui.cpp
-CompileCpp=1
-=======
 CompileCpp=1
 
 [Unit6]
@@ -180,17 +122,12 @@ CompileCpp=1
 
 [Unit8]
 FileName=Graphics\display.cpp
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Folder=Graphics
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-<<<<<<< HEAD
-
-[Unit8]
-=======
 CompileCpp=1
 
 [Unit9]
@@ -224,7 +161,6 @@ BuildCmd=
 CompileCpp=1
 
 [Unit12]
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 FileName=Map\map.cpp
 Folder=Map
 Compile=1
@@ -234,81 +170,7 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
 
-<<<<<<< HEAD
-[Unit9]
-FileName=Include\collision.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit10]
-FileName=Include\enemy.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit11]
-FileName=Include\globals.h
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit12]
-FileName=Include\input.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit13]
-FileName=Include\map.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit14]
-FileName=Include\player.h
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit17]
-FileName=Include\ui.h
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit18]
-=======
-[Unit13]
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 FileName=Physics\collision.cpp
 Folder=Physics
 Compile=1
@@ -318,88 +180,14 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
 
-<<<<<<< HEAD
-[Unit19]
-FileName=Audio\sound.cpp
-CompileCpp=1
-=======
 [Unit14]
 FileName=Audio\sound.cpp
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Folder=Audio
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-<<<<<<< HEAD
-
-[Unit20]
-FileName=Core\engine.cpp
-CompileCpp=1
-Folder=Core
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit21]
-FileName=Graphics\monster.png
-CompileCpp=1
-Folder=Graphics
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit22]
-FileName=Graphics\texture.cpp
-Folder=Graphics
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit23]
-FileName=Include\engine.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit24]
-FileName=Include\sound.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit25]
-FileName=Include\display.h
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit15]
-FileName=Include\stb_image.h
-Folder=Include
-Compile=1
-Link=1
-=======
 CompileCpp=1
 
 [Unit15]
@@ -407,49 +195,12 @@ FileName=Include\collision.h
 Folder=Include
 Compile=0
 Link=0
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
 
 [Unit16]
-<<<<<<< HEAD
-FileName=Include\texture.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit26]
-FileName=Include\lighting.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit27]
-FileName=Graphics\display.cpp
-CompileCpp=1
-Folder=Graphics
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit28]
-FileName=Graphics\lighting.cpp
-Folder=Graphics
-Compile=1
-Link=1
-=======
 FileName=Include\dice.h
 Folder=Include
 Compile=0
@@ -574,86 +325,12 @@ FileName=Include\ui.h
 Folder=Include
 Compile=0
 Link=0
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
 
 [Unit29]
-<<<<<<< HEAD
-FileName=Graphics\stb_image.h
-Folder=Graphics
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit30]
-FileName=Graphics\texture.cpp
-CompileCpp=1
-Folder=Graphics
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit31]
-FileName=Include\engine.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit32]
-FileName=Include\sound.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit33]
-FileName=Physics\collision.o
-Folder=Physics
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit35]
-FileName=Include\lighting.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit36]
-FileName=Graphics\display.cpp
-CompileCpp=1
-Folder=Graphics
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit37]
-FileName=Graphics\display.o
-CompileCpp=1
-=======
 FileName=Graphics\building1.png
 Folder=Graphics
 Compile=0
@@ -695,122 +372,22 @@ CompileCpp=0
 
 [Unit33]
 FileName=Graphics\sementara.png
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Folder=Graphics
 Compile=0
 Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-<<<<<<< HEAD
-
-[Unit38]
-FileName=Graphics\lighting.cpp
-Folder=Graphics
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit39]
-FileName=Graphics\lighting.o
-CompileCpp=1
-Folder=Graphics
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit40]
-FileName=Graphics\stb_image.h
-Folder=Graphics
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit41]
-FileName=Graphics\texture.o
-CompileCpp=1
-Folder=Graphics
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit46]
-FileName=Entity\player.h
-CompileCpp=1
-Folder=Entity
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit47]
-FileName=Core\engine.o
-Folder=Core
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit48]
-FileName=Core\globals.h
-CompileCpp=1
-Folder=Core
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit49]
-FileName=Core\input.h
-CompileCpp=1
-Folder=Core
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit34]
-FileName=Include\display.h
-CompileCpp=1
-Folder=Include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit42]
-FileName=Core\engine.o
-Folder=Core
-=======
 CompileCpp=0
 
 [Unit34]
 FileName=Graphics\top1.png
 Folder=Graphics
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Compile=0
 Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-<<<<<<< HEAD
-
-=======
 CompileCpp=0
 
 [Unit35]
@@ -862,4 +439,3 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=0
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58

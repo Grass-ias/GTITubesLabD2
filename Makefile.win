@@ -4,13 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-<<<<<<< HEAD
-OBJ      = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/ui.o Map/map.o Physics/collision.o Audio/sound.o Core/engine.o Graphics/texture.o Graphics/display.o Graphics/lighting.o
-LINKOBJ  = Core/globals.o Core/input.o Core/main.o Entity/enemy.o Entity/player.o Graphics/ui.o Map/map.o Physics/collision.o Audio/sound.o Core/engine.o Graphics/texture.o Graphics/display.o Graphics/lighting.o
-=======
 OBJ      = Core/engine.o Core/globals.o Core/input.o Core/main.o Entity/dice.o Entity/enemy.o Entity/player.o Graphics/display.o Graphics/lighting.o Graphics/texture.o Graphics/ui.o Map/map.o Physics/collision.o Audio/sound.o
 LINKOBJ  = Core/engine.o Core/globals.o Core/input.o Core/main.o Entity/dice.o Entity/enemy.o Entity/player.o Graphics/display.o Graphics/lighting.o Graphics/texture.o Graphics/ui.o Map/map.o Physics/collision.o Audio/sound.o
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 LIBS     = -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib" -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/lib" -static-libstdc++ -static-libgcc -mwindows -lglut32 -lglu32 -lopengl32 -lwinmm -lgdi32 -g3
 INCS     = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include"
 CXXINCS  = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include/c++"
@@ -29,12 +24,9 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-<<<<<<< HEAD
-=======
 Core/engine.o: Core/engine.cpp
 	$(CPP) -c Core/engine.cpp -o Core/engine.o $(CXXFLAGS)
 
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Core/globals.o: Core/globals.cpp
 	$(CPP) -c Core/globals.cpp -o Core/globals.o $(CXXFLAGS)
 
@@ -44,20 +36,15 @@ Core/input.o: Core/input.cpp
 Core/main.o: Core/main.cpp
 	$(CPP) -c Core/main.cpp -o Core/main.o $(CXXFLAGS)
 
-<<<<<<< HEAD
-=======
 Entity/dice.o: Entity/dice.cpp
 	$(CPP) -c Entity/dice.cpp -o Entity/dice.o $(CXXFLAGS)
 
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Entity/enemy.o: Entity/enemy.cpp
 	$(CPP) -c Entity/enemy.cpp -o Entity/enemy.o $(CXXFLAGS)
 
 Entity/player.o: Entity/player.cpp
 	$(CPP) -c Entity/player.cpp -o Entity/player.o $(CXXFLAGS)
 
-<<<<<<< HEAD
-=======
 Graphics/display.o: Graphics/display.cpp
 	$(CPP) -c Graphics/display.cpp -o Graphics/display.o $(CXXFLAGS)
 
@@ -67,7 +54,6 @@ Graphics/lighting.o: Graphics/lighting.cpp
 Graphics/texture.o: Graphics/texture.cpp
 	$(CPP) -c Graphics/texture.cpp -o Graphics/texture.o $(CXXFLAGS)
 
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 Graphics/ui.o: Graphics/ui.cpp
 	$(CPP) -c Graphics/ui.cpp -o Graphics/ui.o $(CXXFLAGS)
 
@@ -79,18 +65,3 @@ Physics/collision.o: Physics/collision.cpp
 
 Audio/sound.o: Audio/sound.cpp
 	$(CPP) -c Audio/sound.cpp -o Audio/sound.o $(CXXFLAGS)
-<<<<<<< HEAD
-
-Core/engine.o: Core/engine.cpp
-	$(CPP) -c Core/engine.cpp -o Core/engine.o $(CXXFLAGS)
-
-Graphics/texture.o: Graphics/texture.cpp
-	$(CPP) -c Graphics/texture.cpp -o Graphics/texture.o $(CXXFLAGS)
-
-Graphics/display.o: Graphics/display.cpp
-	$(CPP) -c Graphics/display.cpp -o Graphics/display.o $(CXXFLAGS)
-
-Graphics/lighting.o: Graphics/lighting.cpp
-	$(CPP) -c Graphics/lighting.cpp -o Graphics/lighting.o $(CXXFLAGS)
-=======
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58

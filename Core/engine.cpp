@@ -15,12 +15,9 @@
 #include "../Include/texture.h"
 #include "../Include/sound.h"
 #include "../Include/lighting.h"
-<<<<<<< HEAD
-=======
 #include "../Include/dice.h"
 
 static int diceSpawnTimer = 0;
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 
 void timer(int value) {
     if (gameState == 1) {
@@ -31,34 +28,27 @@ void timer(int value) {
             if (introTimer == 0) {
                 chaseStarted = true;
                 enemyZ = playerZ + 60.0f;
-                currentFogStart = 15.0f;
-                currentFogEnd = 70.0f;
-<<<<<<< HEAD
-=======
-
-                spawnDiceFromSide();
-                diceSpawnTimer = 120;
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
+                currentFogStart = 12.0f;
+                currentFogEnd = 62.0f;
+                diceSpawnTimer = 40;
             }
         }
         
         if (chaseStarted) {
-<<<<<<< HEAD
-            updateEnemy(); 
-=======
             updateEnemy();
 
-            if (!dice.active) {
+            if (dice.active) {
+                updateDice();
+            }
+            else {
                 if (diceSpawnTimer > 0) {
                     diceSpawnTimer--;
-                } else {
+                }
+                else {
                     spawnDiceFromSide();
-                    diceSpawnTimer = 120 + (rand() % 80);
+                    diceSpawnTimer = 170 + (rand() % 90);
                 }
             }
-
-            updateDice();
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
         }
         if (!isTestMap) {
             float triggerZ = currChunk.z[18] + (currChunk.sz[18] / 2.0f); 
@@ -100,12 +90,12 @@ void display() {
         glFogf(GL_FOG_END, 70.0f);
     } 
     else {
-        glClearColor(0.02f, 0.02f, 0.02f, 1.0f); 
+        glClearColor(0.015f, 0.020f, 0.040f, 1.0f); 
         glEnable(GL_FOG);
         GLfloat fogColor[4];
-        fogColor[0] = 0.02f;
-        fogColor[1] = 0.02f;
-        fogColor[2] = 0.02f;
+        fogColor[0] = 0.015f;
+        fogColor[1] = 0.020f;
+        fogColor[2] = 0.040f;
         fogColor[3] = 1.0f;
         glFogfv(GL_FOG_COLOR, fogColor);
         glFogi(GL_FOG_MODE, GL_LINEAR);
@@ -148,11 +138,8 @@ void Reshape(int w, int h) {
 void initEngine() {
     glEnable(GL_DEPTH_TEST); 
     setupLighting(); 
-<<<<<<< HEAD
-    
-=======
     loadBuildingTextures();
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
+    
     srand((unsigned)time(NULL)); 
     
     for(int i = 0; i < 256; i++) {
@@ -169,19 +156,16 @@ void initEngine() {
     
     initPlayer();
     initEnemy();
-<<<<<<< HEAD
-=======
     initDice();
->>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
     initAudio();
     
-    titleTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\sementara.png");
-    sideTex[0] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\building1.png");
-    topTex[0] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\top1.png");
-    sideTex[1] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\building2.png");
-    topTex[1] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\top2.png");
-    sideTex[2] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\building3.png");
-    topTex[2] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\top3.png");
+    titleTexture = loadTexture("Graphics/sementara.png");
+    sideTex[0] = loadTexture("Graphics/building1.png");
+    topTex[0] = loadTexture("Graphics/top1.png");
+    sideTex[1] = loadTexture("Graphics/building2.png");
+    topTex[1] = loadTexture("Graphics/top2.png");
+    sideTex[2] = loadTexture("Graphics/building3.png");
+    topTex[2] = loadTexture("Graphics/top3.png");
 }
 
 void setupCallbacks() {
