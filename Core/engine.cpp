@@ -15,6 +15,12 @@
 #include "../Include/texture.h"
 #include "../Include/sound.h"
 #include "../Include/lighting.h"
+<<<<<<< HEAD
+=======
+#include "../Include/dice.h"
+
+static int diceSpawnTimer = 0;
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 
 void timer(int value) {
     if (gameState == 1) {
@@ -27,11 +33,32 @@ void timer(int value) {
                 enemyZ = playerZ + 60.0f;
                 currentFogStart = 15.0f;
                 currentFogEnd = 70.0f;
+<<<<<<< HEAD
+=======
+
+                spawnDiceFromSide();
+                diceSpawnTimer = 120;
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
             }
         }
         
         if (chaseStarted) {
+<<<<<<< HEAD
             updateEnemy(); 
+=======
+            updateEnemy();
+
+            if (!dice.active) {
+                if (diceSpawnTimer > 0) {
+                    diceSpawnTimer--;
+                } else {
+                    spawnDiceFromSide();
+                    diceSpawnTimer = 120 + (rand() % 80);
+                }
+            }
+
+            updateDice();
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
         }
         if (!isTestMap) {
             float triggerZ = currChunk.z[18] + (currChunk.sz[18] / 2.0f); 
@@ -121,7 +148,11 @@ void Reshape(int w, int h) {
 void initEngine() {
     glEnable(GL_DEPTH_TEST); 
     setupLighting(); 
+<<<<<<< HEAD
     
+=======
+    loadBuildingTextures();
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
     srand((unsigned)time(NULL)); 
     
     for(int i = 0; i < 256; i++) {
@@ -138,6 +169,10 @@ void initEngine() {
     
     initPlayer();
     initEnemy();
+<<<<<<< HEAD
+=======
+    initDice();
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
     initAudio();
     
     titleTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\sementara.png");

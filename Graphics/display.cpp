@@ -2,6 +2,10 @@
 #include "../Include/globals.h"
 #include "../Include/texture.h"
 #include "../Include/lighting.h"
+<<<<<<< HEAD
+=======
+#include "../Include/dice.h"
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -166,6 +170,7 @@ void drawTexturedBuilding(float sizeX, float sizeY, float sizeZ, GLuint texSide,
     float hx = sizeX / 2.0f;
     float hy = sizeY / 2.0f;
     float hz = sizeZ / 2.0f;
+<<<<<<< HEAD
     float rx = sizeX / 4.0f;
     float ry = sizeY / 4.0f;
     float rz = sizeZ / 4.0f;
@@ -235,6 +240,95 @@ void drawTexturedBuilding(float sizeX, float sizeY, float sizeZ, GLuint texSide,
     if (texEnabled) {
         glEnable(GL_TEXTURE_2D);
     }
+=======
+
+    // TEXTURE DIBIKIN GEDE:
+    // 0.12 = zoom in. Kalau masih kecil, turunin ke 0.08.
+    float repeatX = 0.65f;
+	float repeatY = 0.85f;
+	float repeatZ = 0.65f;
+
+    // =======================
+    // SISI GEDUNG: PAKAI TEXTURE
+    // =======================
+    if (texSide != 0) {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texSide);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glColor3f(1.0f, 1.0f, 1.0f);
+    } else {
+        glDisable(GL_TEXTURE_2D);
+        glColor3f(0.45f, 0.45f, 0.45f);
+    }
+
+    glBegin(GL_QUADS);
+
+    // DEPAN
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f);              glVertex3f(-hx, -hy,  hz);
+    glTexCoord2f(repeatX, 0.0f);           glVertex3f( hx, -hy,  hz);
+    glTexCoord2f(repeatX, repeatY);        glVertex3f( hx,  hy,  hz);
+    glTexCoord2f(0.0f, repeatY);           glVertex3f(-hx,  hy,  hz);
+
+    // BELAKANG
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glTexCoord2f(0.0f, 0.0f);              glVertex3f( hx, -hy, -hz);
+    glTexCoord2f(repeatX, 0.0f);           glVertex3f(-hx, -hy, -hz);
+    glTexCoord2f(repeatX, repeatY);        glVertex3f(-hx,  hy, -hz);
+    glTexCoord2f(0.0f, repeatY);           glVertex3f( hx,  hy, -hz);
+
+    // KANAN
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f);              glVertex3f( hx, -hy,  hz);
+    glTexCoord2f(repeatZ, 0.0f);           glVertex3f( hx, -hy, -hz);
+    glTexCoord2f(repeatZ, repeatY);        glVertex3f( hx,  hy, -hz);
+    glTexCoord2f(0.0f, repeatY);           glVertex3f( hx,  hy,  hz);
+
+    // KIRI
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f);              glVertex3f(-hx, -hy, -hz);
+    glTexCoord2f(repeatZ, 0.0f);           glVertex3f(-hx, -hy,  hz);
+    glTexCoord2f(repeatZ, repeatY);        glVertex3f(-hx,  hy,  hz);
+    glTexCoord2f(0.0f, repeatY);           glVertex3f(-hx,  hy, -hz);
+
+    glEnd();
+
+    // =======================
+    // ATAS GEDUNG: POLOS, BIAR TIDAK STATIC
+    // =======================
+    glDisable(GL_TEXTURE_2D);
+    glColor3f(0.42f, 0.40f, 0.32f);
+
+    glBegin(GL_QUADS);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(-hx, hy,  hz);
+    glVertex3f( hx, hy,  hz);
+    glVertex3f( hx, hy, -hz);
+    glVertex3f(-hx, hy, -hz);
+    glEnd();
+
+    // =======================
+    // BAWAH GEDUNG: GELAP
+    // =======================
+    glColor3f(0.08f, 0.08f, 0.07f);
+
+    glBegin(GL_QUADS);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glVertex3f(-hx, -hy, -hz);
+    glVertex3f( hx, -hy, -hz);
+    glVertex3f( hx, -hy,  hz);
+    glVertex3f(-hx, -hy,  hz);
+    glEnd();
+
+    glEnable(GL_TEXTURE_2D);
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+GLuint getBuildingTexture(int index) {
+    if (index % 3 == 0) return textureBuilding1;
+    if (index % 3 == 1) return textureBuilding2;
+    return textureBuilding3;
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
 }
 
 void drawGame3D() {
@@ -434,6 +528,7 @@ void drawGame3D() {
             continue;
         }
         for (int i = 0; i < 40; i++) {
+<<<<<<< HEAD
             glPushMatrix();
             glTranslatef(chunks[c]->bgX[i], chunks[c]->bgY[i], chunks[c]->bgZ[i]);
             glEnable(GL_TEXTURE_2D);
@@ -442,6 +537,30 @@ void drawGame3D() {
             drawTexturedBuilding(chunks[c]->bgWidth[i], chunks[c]->bgHeight[i], chunks[c]->bgWidth[i], sideTex[chunks[c]->bgTexIdx[i]], topTex[chunks[c]->bgTexIdx[i]]);
             glPopMatrix();
         }
+=======
+		    glPushMatrix();
+		
+		    glTranslatef(chunks[c]->bgX[i], chunks[c]->bgY[i], chunks[c]->bgZ[i]);
+		
+		    glEnable(GL_TEXTURE_2D);
+		    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		
+		    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+		    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+		
+		    GLuint buildingTex = getBuildingTexture(i + c * 40);
+		
+		    drawTexturedBuilding(
+		        chunks[c]->bgWidth[i],
+		        chunks[c]->bgHeight[i],
+		        chunks[c]->bgWidth[i],
+		        buildingTex,
+		        0
+		    );
+		
+		    glPopMatrix();
+		}
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
     }
     glFogf(GL_FOG_START, chaseStarted ? currentFogStart : 15.0f);
     glFogf(GL_FOG_END, chaseStarted ? currentFogEnd : 70.0f);
@@ -489,6 +608,12 @@ void drawGame3D() {
             glPopMatrix();
         }
     }
+<<<<<<< HEAD
+=======
+    // Dadu obstacle saat chase.
+    drawDice();
+
+>>>>>>> 86274678d26223726222a12be05ee6ddd8e51b58
     // Shadow sederhana yang stabil: blob shadow di atas platform.
     drawEntityShadows();
 
