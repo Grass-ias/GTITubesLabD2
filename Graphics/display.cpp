@@ -13,8 +13,8 @@ void setupBuildingMaterial(float brightness) {
     float mat_emission[4];
     float mat_shininess[1];
     float ambVal = brightness;
-    if (ambVal < 0.3f) {
-        ambVal = 0.3f;
+    if (ambVal < 0.20f) {
+        ambVal = 0.20f;
     }
     mat_ambient[0] = ambVal;
     mat_ambient[1] = ambVal;
@@ -28,9 +28,9 @@ void setupBuildingMaterial(float brightness) {
     mat_specular[1] = 0.8f;
     mat_specular[2] = 0.8f;
     mat_specular[3] = 1.0f;
-    mat_emission[0] = 0.15f;
-    mat_emission[1] = 0.15f;
-    mat_emission[2] = 0.15f;
+    mat_emission[0] = 0.0f;
+    mat_emission[1] = 0.0f;
+    mat_emission[2] = 0.0f;
     mat_emission[3] = 1.0f;
     mat_shininess[0] = 50.0f;
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
@@ -47,6 +47,119 @@ void resetBuildingMaterial() {
     reset_emission[2] = 0.0f;
     reset_emission[3] = 1.0f;
     glMaterialfv(GL_FRONT, GL_EMISSION, reset_emission);
+}
+
+
+static bool findPlatformTopAt(float x, float z, float oldY, float *outY) {
+    float bestY = -1000.0f;
+    bool found = false;
+    LevelChunk* chunks[3];
+    chunks[0] = &prevChunk;
+    chunks[1] = &currChunk;
+    chunks[2] = &nextChunk;
+
+    for (int c = 0; c < 3; c++) {
+        if (!chunks[c]->active) continue;
+        for (int i = 0; i < JUMLAH_PLATFORM; i++) {
+            float minX = chunks[c]->x[i] - chunks[c]->sx[i] / 2.0f;
+            float maxX = chunks[c]->x[i] + chunks[c]->sx[i] / 2.0f;
+            float minZ = chunks[c]->z[i] - chunks[c]->sz[i] / 2.0f;
+            float maxZ = chunks[c]->z[i] + chunks[c]->sz[i] / 2.0f;
+            float topY = chunks[c]->y[i] + 0.25f;
+
+            if (x >= minX && x <= maxX && z >= minZ && z <= maxZ && oldY >= topY - 2.0f) {
+                if (!found || topY > bestY) {
+                    bestY = topY;
+                    found = true;
+                }
+            }
+        }
+    }
+
+    if (found) {
+        *outY = bestY;
+    }
+    return found;
+}
+
+static void drawFlatShadow(float x, float y, float z, float radiusX, float radiusZ, float alpha) {
+    glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_FOG);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthMask(GL_FALSE);
+
+    glColor4f(0.0f, 0.0f, 0.0f, alpha);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex3f(x, y + 0.035f, z);
+        for (int i = 0; i <= 40; i++) {
+            float a = 2.0f * PI * (float)i / 40.0f;
+            glVertex3f(x + cos(a) * radiusX, y + 0.035f, z + sin(a) * radiusZ);
+        }
+    glEnd();
+
+    glDepthMask(GL_TRUE);
+    glPopAttrib();
+}
+
+static void drawEntityShadows() {
+    float shadowY;
+
+    // Shadow pemain: bikin arah cahaya kebaca meskipun player first-person tidak kelihatan.
+    if (findPlatformTopAt(playerX, playerZ, playerY + currentHeight, &shadowY)) {
+        float alpha = chaseStarted ? 0.42f : 0.30f;
+        drawFlatShadow(playerX + 0.35f, shadowY, playerZ + 0.35f, currentRadiusX * 2.4f, currentRadiusZ * 2.0f, alpha);
+    }
+
+    // Shadow enemy belakang saat chase.
+    if (chaseStarted && findPlatformTopAt(playerX, enemyZ, enemyY + 2.0f, &shadowY)) {
+        drawFlatShadow(playerX, shadowY, enemyZ, 4.8f, 3.6f, 0.50f);
+    }
+
+    // Shadow front enemy kalau aktif.
+    if (frontEnemyActive && findPlatformTopAt(playerX, frontEnemyZ, 8.0f, &shadowY)) {
+        drawFlatShadow(playerX, shadowY, frontEnemyZ, 4.4f, 3.3f, 0.45f);
+    }
+}
+
+static void drawSkyLightObject() {
+    glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_FOG);
+    glDisable(GL_DEPTH_TEST);
+
+    float skyX = playerX + 24.0f;
+    float skyY = playerY + 44.0f;
+    float skyZ = playerZ - 75.0f;
+
+    glPushMatrix();
+    glTranslatef(skyX, skyY, skyZ);
+
+    if (!chaseStarted) {
+        // Matahari: solid + aura sederhana.
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(1.0f, 0.88f, 0.15f, 0.18f);
+        glutSolidSphere(10.0f, 24, 24);
+        glDisable(GL_BLEND);
+
+        glColor3f(1.0f, 0.93f, 0.0f);
+        glutSolidSphere(6.0f, 32, 32);
+    } else {
+        // Bulan sabit: sphere terang ditutup sphere sewarna langit malam.
+        glColor3f(0.78f, 0.82f, 1.0f);
+        glutSolidSphere(5.2f, 32, 32);
+        glTranslatef(2.0f, 0.25f, 0.0f);
+        glColor3f(0.02f, 0.02f, 0.04f);
+        glutSolidSphere(5.2f, 32, 32);
+    }
+
+    glPopMatrix();
+    glPopAttrib();
 }
 
 void drawTexturedBuilding(float sizeX, float sizeY, float sizeZ, GLuint texSide, GLuint texTop) {
@@ -187,29 +300,7 @@ void drawGame3D() {
     glEnable(GL_TEXTURE_2D);
     glDisable(GL_FOG);
     
-    glDisable(GL_DEPTH_TEST);
-    glPushMatrix();
-    glTranslatef(playerX, playerY + 80.0f, playerZ - 150.0f);
-    glDisable(GL_LIGHTING);
-    if (!chaseStarted) {
-        glColor3f(0.9f, 0.85f, 0.6f);
-        GLUquadricObj* sunQuad = gluNewQuadric();
-        gluSphere(sunQuad, 8.0f, 32, 32);
-        gluDeleteQuadric(sunQuad);
-    } else {
-        glColor3f(0.0f, 0.0f, 0.0f);
-        GLUquadricObj* innerQuad = gluNewQuadric();
-        gluSphere(innerQuad, 8.0f, 32, 32);
-        gluDeleteQuadric(innerQuad);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glColor4f(1.0f, 0.3f, 0.0f, 0.7f);
-        glutSolidTorus(2.0, 9.0, 16, 32);
-        glDisable(GL_BLEND);
-    }
-    glEnable(GL_LIGHTING);
-    glPopMatrix();
-    glEnable(GL_DEPTH_TEST);
+    drawSkyLightObject();
     glDisable(GL_FOG);
     if (isTestMap) {
         glPushMatrix();
@@ -398,46 +489,9 @@ void drawGame3D() {
             glPopMatrix();
         }
     }
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(0.0f, 0.0f, 0.0f, 0.95f);
-    glPushMatrix();
-    float l[3];
-    l[0] = 0.0f;
-    l[1] = 100.0f;
-    l[2] = playerZ;
-    float e_plane[3];
-    e_plane[0] = 0.0f;
-    e_plane[1] = -59.5f;
-    e_plane[2] = 0.0f;
-    float n_plane[3];
-    n_plane[0] = 0.0f;
-    n_plane[1] = 1.0f;
-    n_plane[2] = 0.0f;
-    glShadowProjection(l, e_plane, n_plane);
-    glDepthMask(GL_FALSE);
-    for (int c = 0; c < 3; c++) {
-        if (!chunks[c]->active) {
-            continue;
-        }
-        for (int i = 0; i < JUMLAH_PLATFORM; i++) {
-            if (c == 2 && i == 0) {
-                continue; 
-            }
-            if (c == 0 && i == 18) {
-                continue;
-            }
-            glPushMatrix();
-            glTranslatef(chunks[c]->x[i], chunks[c]->y[i] - chunks[c]->sy[i] / 2.0f + 0.25f, chunks[c]->z[i]); 
-            drawTexturedBuilding(chunks[c]->sx[i], chunks[c]->sy[i], chunks[c]->sz[i], sideTex[chunks[c]->platTexIdx[i]], topTex[chunks[c]->platTexIdx[i]]);
-            glPopMatrix();
-        }
-    }
-    glPopMatrix();
-    glDepthMask(GL_TRUE);
-    glDisable(GL_BLEND);
+    // Shadow sederhana yang stabil: blob shadow di atas platform.
+    drawEntityShadows();
+
     glEnable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
     glDisable(GL_TEXTURE_2D);
