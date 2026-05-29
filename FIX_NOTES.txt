@@ -1,0 +1,14 @@
+FIX APPLIED:
+1. Building texture enlarged/zoomed (repeat 0.12) so it is not tiny/static.
+2. Building roof no longer uses facade texture.
+3. Added dice obstacle:
+   - Entity/dice.cpp
+   - Include/dice.h
+   - close side spawn near player during chase
+   - rolls left/right and knocks player when hit
+4. Makefile and RAPGv1.dev updated with dice.cpp.
+5. Old .o and .exe files removed.
+
+IMPORTANT:
+Open RAPGv1.dev -> Execute -> Clean -> Rebuild All.
+Do not add JPG files to the Dev-C++ project compile list.
