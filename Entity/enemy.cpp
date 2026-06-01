@@ -1,6 +1,7 @@
 #include "../Include/enemy.h"
 #include "../Include/globals.h"
 #include "../Include/texture.h"
+#include <math.h>
 
 void updateEnemy() {
     if (gameWon || deathType > 0) {
@@ -13,7 +14,8 @@ void updateEnemy() {
         }
 
         if (chaseStarted && playerZ > enemyZ - 24.5f) {
-            if (frontEnemyActive) {
+            float dirZ = -cos(yaw);
+            if (frontEnemyActive || (keys['w'] && dirZ > 0.0f)) {
                 gameWon = true;
             }
             else {
