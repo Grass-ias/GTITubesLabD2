@@ -59,5 +59,5 @@ void initEnemy() {
     gluQuadricDrawStyle(quadricEnemy, GLU_FILL);
     gluQuadricNormals(quadricEnemy, GLU_SMOOTH);
     gluQuadricTexture(quadricEnemy, GL_TRUE); 
-    enemyTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Graphics\\monster.png");
+    enemyTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\monster.png");
 }

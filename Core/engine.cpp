@@ -13,7 +13,6 @@
 #include "../Include/ui.h"
 #include "../Include/display.h"
 #include "../Include/texture.h"
-#include "../Include/sound.h"
 #include "../Include/lighting.h"
 #include "../Include/dice.h"
 
@@ -158,14 +157,14 @@ void initEngine() {
     initEnemy();
     initDice();
     
-    titleTexture = loadTexture("Graphics/logo2.png");
-    sideTex[0] = loadTexture("Graphics/building1.png");
-    topTex[0] = loadTexture("Graphics/top1.png");
-    sideTex[1] = loadTexture("Graphics/building2.png");
-    topTex[1] = loadTexture("Graphics/top2.png");
-    sideTex[2] = loadTexture("Graphics/building3.png");
-    topTex[2] = loadTexture("Graphics/top3.png");
-    enemyTexture = loadTexture("Graphics/monster.png");
+    titleTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\logo2.png");
+    sideTex[0] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\building1.png");
+    topTex[0] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\top1.png");
+    sideTex[1] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\building2.png");
+    topTex[1] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\top2.png");
+    sideTex[2] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\building3.png");
+    topTex[2] = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\top3.png");
+    enemyTexture = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\monster.png");
 }
 
 void setupCallbacks() {

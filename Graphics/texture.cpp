@@ -20,13 +20,10 @@ GLuint loadTexture(const char* filename) {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    // Important for JPG/RGB images.
-    // Without this, some widths can become striped or corrupted.
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
 
-    // GLU builds mipmaps and also helps older OpenGL handle non-power-of-two images.
     gluBuild2DMipmaps(
         GL_TEXTURE_2D,
         format,
@@ -40,7 +37,6 @@ GLuint loadTexture(const char* filename) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    // This is what makes texCoord values above 1.0 repeat instead of stretch.
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -49,7 +45,7 @@ GLuint loadTexture(const char* filename) {
 }
 
 void loadBuildingTextures() {
-    textureBuilding1 = loadTexture("Graphics/textureBuilding1.jpg");
-    textureBuilding2 = loadTexture("Graphics/textureBuilding2.jpg");
-    textureBuilding3 = loadTexture("Graphics/textureBuilding3.jpg");
+    textureBuilding1 = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\textureBuilding1.jpg");
+    textureBuilding2 = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\textureBuilding2.jpg");
+    textureBuilding3 = loadTexture("C:\\Users\\TaiBalap\\Documents\\GitHub\\GTITubesLabD2\\Textures\\textureBuilding3.jpg");
 }
