@@ -159,7 +159,7 @@ void initEngine() {
     initDice();
     initAudio();
     
-    titleTexture = loadTexture("Graphics/sementara.png");
+    titleTexture = loadTexture("Graphics/logo2.png");
     sideTex[0] = loadTexture("Graphics/building1.png");
     topTex[0] = loadTexture("Graphics/top1.png");
     sideTex[1] = loadTexture("Graphics/building2.png");
