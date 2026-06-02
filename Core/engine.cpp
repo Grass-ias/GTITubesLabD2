@@ -157,7 +157,6 @@ void initEngine() {
     initPlayer();
     initEnemy();
     initDice();
-    initAudio();
     
     titleTexture = loadTexture("Graphics/logo2.png");
     sideTex[0] = loadTexture("Graphics/building1.png");
@@ -166,6 +165,7 @@ void initEngine() {
     topTex[1] = loadTexture("Graphics/top2.png");
     sideTex[2] = loadTexture("Graphics/building3.png");
     topTex[2] = loadTexture("Graphics/top3.png");
+    enemyTexture = loadTexture("Graphics/monster.png");
 }
 
 void setupCallbacks() {

@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = Core/engine.o Core/globals.o Core/input.o Core/main.o Entity/dice.o Entity/enemy.o Entity/player.o Graphics/display.o Graphics/lighting.o Graphics/texture.o Graphics/ui.o Map/map.o Physics/collision.o Audio/sound.o
-LINKOBJ  = Core/engine.o Core/globals.o Core/input.o Core/main.o Entity/dice.o Entity/enemy.o Entity/player.o Graphics/display.o Graphics/lighting.o Graphics/texture.o Graphics/ui.o Map/map.o Physics/collision.o Audio/sound.o
+OBJ      = Core/engine.o Core/globals.o Core/input.o Core/main.o Entity/dice.o Entity/enemy.o Entity/player.o Graphics/display.o Graphics/lighting.o Graphics/texture.o Graphics/ui.o Map/map.o Physics/collision.o
+LINKOBJ  = Core/engine.o Core/globals.o Core/input.o Core/main.o Entity/dice.o Entity/enemy.o Entity/player.o Graphics/display.o Graphics/lighting.o Graphics/texture.o Graphics/ui.o Map/map.o Physics/collision.o
 LIBS     = -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib" -L"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/lib" -static-libstdc++ -static-libgcc -mwindows -lglut32 -lglu32 -lopengl32 -lwinmm -lgdi32 -g3
 INCS     = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include"
 CXXINCS  = -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include" -I"C:/Program Files (x86)/GibsTeam/Dev-C++ GTI MOD/Dev-Cpp/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include/c++"
@@ -62,6 +62,3 @@ Map/map.o: Map/map.cpp
 
 Physics/collision.o: Physics/collision.cpp
 	$(CPP) -c Physics/collision.cpp -o Physics/collision.o $(CXXFLAGS)
-
-Audio/sound.o: Audio/sound.cpp
-	$(CPP) -c Audio/sound.cpp -o Audio/sound.o $(CXXFLAGS)

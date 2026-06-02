@@ -49,7 +49,7 @@ GLuint loadTexture(const char* filename) {
 }
 
 void loadBuildingTextures() {
-    textureBuilding1 = loadTexture("Assets/Textures/textureBuilding1.jpg");
-    textureBuilding2 = loadTexture("Assets/Textures/textureBuilding2.jpg");
-    textureBuilding3 = loadTexture("Assets/Textures/textureBuilding3.jpg");
+    textureBuilding1 = loadTexture("Graphics/textureBuilding1.jpg");
+    textureBuilding2 = loadTexture("Graphics/textureBuilding2.jpg");
+    textureBuilding3 = loadTexture("Graphics/textureBuilding3.jpg");
 }

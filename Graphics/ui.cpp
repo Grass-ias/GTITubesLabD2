@@ -67,6 +67,15 @@ void end2D() {
 
 void drawMenu() {
     begin2D(); 
+    glDisable(GL_TEXTURE_2D);
+    glColor3f(1.5f, 1.65f, 1.75f);
+    glBegin(GL_QUADS);
+    glVertex2f(0, 0);
+    glVertex2f(windowWidth, 0);
+    glVertex2f(windowWidth, windowHeight);
+    glVertex2f(0, windowHeight);
+    glEnd();
+    
     float tw = 440.0f;
     float th = 220.0f;
     float tx = (windowWidth - tw) / 2.0f;
@@ -77,16 +86,16 @@ void drawMenu() {
     float textX1 = (windowWidth - 370.0f) / 2.0f;
     bool showBlink = ((glutGet(GLUT_ELAPSED_TIME) / 500) % 2 == 0);
     if (showBlink) {
-        drawShadowText(textX1, textY1, "> INITIATE SYSTEM [PRESS ENTER]", 0.2f, 1.0f, 0.2f);
+        drawShadowText(textX1, textY1, "> INITIATE SYSTEM [PRESS ENTER]", 1.0f, 1.0f, 1.0f);
     }
     
     float textY2 = textY1 - 40.0f;
     float textX2 = (windowWidth - 160.0f) / 2.0f;
-    drawShadowText(textX2, textY2, "[H] HELP MENU", 0.0f, 0.8f, 1.0f);
+    drawShadowText(textX2, textY2, "[H] HELP MENU", 1.0f, 1.0f, 1.0f);
     
     float textY3 = textY2 - 30.0f;
     float textX3 = (windowWidth - 250.0f) / 2.0f;
-    drawShadowText(textX3, textY3, "[ESC] SHUTDOWN SYSTEM", 1.0f, 0.3f, 0.3f);
+    drawShadowText(textX3, textY3, "[ESC] SHUTDOWN SYSTEM", 1.0f, 1.0f, 1.0f);
     end2D();
 }
 
